@@ -1,4 +1,4 @@
-function prite(x,y,text,tcolor,bcolor)
+local function prite(x,y,text,tcolor,bcolor)
     if tcolor == nil then
         tcolor = colors.white
     end
