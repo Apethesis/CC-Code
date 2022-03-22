@@ -9,4 +9,6 @@ function prite(x,y,text,tcolor,bcolor)
     term.setTextColor(tcolor)
     term.setBackgroundColor(bcolor)
     term.write(text)
+    term.setTextColor(colors.white)
+    term.setBackgroundColor(colors.black)
 end -- this is prite
