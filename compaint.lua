@@ -1,3 +1,8 @@
+local ver = 1.1
+local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comlib.lua")
+local version = request.readLine()
+request.close()
+local versionNumber = version:match("= (.+)")
 print("This program is still in beta, and isn't stable.")
 print("Do you wish to continue? (yes/no)")
 local beta = read()
@@ -82,7 +87,7 @@ function sbug()
     end
 end
 local tx,ty = term.getSize()
-comlib.prite(tx-11,1,"ComPaint v1")
+comlib.prite(tx-11,1,"ComPaint v"..versionNumber)
 while true do
     parallel.waitForAny(clrbutton,draw,sbug)
     sleep(0.1)
