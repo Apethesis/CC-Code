@@ -105,7 +105,7 @@ function termcheck()
     end
 end
 local tx,ty = term.getSize()
-comlib.prite(tx-12,1,"ComPaint v"..versionNumber)
+comlib.prite(tx-12,1,"ComPaint v"..ver)
 while true do
     parallel.waitForAny(clrbutton,draw,sbug,termcheck)
     sleep(0.1)
