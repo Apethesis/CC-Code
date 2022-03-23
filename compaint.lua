@@ -1,10 +1,9 @@
-local ver = 1.5
+local ver = "1.5"
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
 local versionNumber = version:match("= (.+)")
-local verNum = tonumber(versionNumber)
-if not (ver == verNum) then
+if not (ver == versionNumber) then
     fs.delete("./compaint.lua")
     fs.delete("./comlib.lua")
     local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
