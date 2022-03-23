@@ -1,8 +1,18 @@
-local ver = 1.1
+local ver = 1.2
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
 local versionNumber = version:match("= (.+)")
+if not ver == versionNumber then
+    fs.delete("./compaint.lua")
+    fs.delete("./comlib.lua")
+    local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
+    local newver = fs.open("./compaint.lua","w")
+    newver.write(request.readAll())
+    request.close()
+    newver.close()
+    error("ComPaint updated.")
+end
 print("This program is still in beta, and isn't stable.")
 print("Do you wish to continue? (yes/no)")
 local beta = read()
@@ -86,9 +96,17 @@ function sbug()
         sleep(0.1)
     end
 end
+function termcheck()
+    while true do
+        os.pullEventRaw("terminate") -- terminate can only be pulled via Raw
+        term.clear()
+        term.setCursorPos(1,1)
+        error("",0) -- to make the program exit we throw an invisible error
+    end
+end
 local tx,ty = term.getSize()
-comlib.prite(tx-11,1,"ComPaint v"..versionNumber)
+comlib.prite(tx-12,1,"ComPaint v"..versionNumber)
 while true do
-    parallel.waitForAny(clrbutton,draw,sbug)
+    parallel.waitForAny(clrbutton,draw,sbug,termcheck)
     sleep(0.1)
 end
