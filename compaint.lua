@@ -1,5 +1,5 @@
 local ver = 1.1
-local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comlib.lua")
+local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
 local versionNumber = version:match("= (.+)")
