@@ -1,4 +1,4 @@
-local ver = "1.6"
+local ver = "2.0"
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
@@ -37,7 +37,15 @@ if not fs.exists("./comlib.lua") then
 end
 local comlib = require("comlib")
 local map = {}
+local loadsave = fs.open("save.cimg","r")
+local msave = textutils.unserialize(loadsave.readAll())
+map = msave
 term.clear()
+for x,_temp in pairs(map) do
+    for y,data in pairs(_temp) do
+      comlib.prite(x,y," ",colors.white,data)
+    end
+  end
 local colr = colors.white
 local btable = {
     [1] = colors.white,
@@ -65,6 +73,7 @@ function draw()
         local eventType, _, _, _, _ = os.pullEvent()
         if y > 1 then
             comlib.prite(x,y," ",colors.white,btable[colr])
+            map[x] = map[x] or {}
             map[x][y] = btable[colr]
             local ex,ey = term.getSize()
             local ax = ex - 17
@@ -74,6 +83,7 @@ function draw()
                 comlib.prite(dx,dy," ",colors.white,btable[colr])
                 comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
                 sleep()
+                map[dx] = map[dx] or {}
                 map[dx][dy] = btable[colr]
             end
         end
@@ -90,17 +100,34 @@ end
 function termcheck()
     while true do
         os.pullEventRaw("terminate") -- terminate can only be pulled via Raw
-        local autosave = fs.open("/save.cimg","w")
-        autosave.write(map)
-        autosave.close()
         term.clear()
         term.setCursorPos(1,1)
         error("",0) -- to make the program exit we throw an invisible error
     end
 end
+function savecheck()
+    while true do
+        local _, key, _ = os.pullEvent("key")
+        if key == keys.s then
+            local autosave = fs.open("save.cimg","w")
+            local poet = textutils.serialize(map)
+            autosave.write(poet)
+            autosave.close()
+        end
+    end
+end
+function clearmap()
+    while true do
+        local _, key, _ = os.pullEvent("key")
+        if key == keys.c then
+            map = {}
+        end
+    end
+end
 local tx,ty = term.getSize()
 comlib.prite(tx-12,1,"ComPaint v"..ver)
 while true do
-    parallel.waitForAny(clrbutton,draw,sbug,termcheck)
+    parallel.waitForAny(clrbutton,draw,sbug,termcheck,savecheck,clearmap)
     sleep(0.1)
 end
+
