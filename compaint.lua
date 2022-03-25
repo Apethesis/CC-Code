@@ -1,4 +1,4 @@
-local ver = "2.0"
+local ver = "2.2"
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
@@ -40,6 +40,7 @@ local map = {}
 local loadsave = fs.open("save.cimg","r")
 local msave = textutils.unserialize(loadsave.readAll())
 map = msave
+loadsave.close()
 term.clear()
 for x,_temp in pairs(map) do
     for y,data in pairs(_temp) do
@@ -105,14 +106,20 @@ function termcheck()
         error("",0) -- to make the program exit we throw an invisible error
     end
 end
+function save()
+    local autosave = fs.open("save.cimg","w")
+    local poet = textutils.serialize(map)
+    autosave.write(poet)
+    autosave.close()
+end
 function savecheck()
     while true do
         local _, key, _ = os.pullEvent("key")
         if key == keys.s then
-            local autosave = fs.open("save.cimg","w")
-            local poet = textutils.serialize(map)
-            autosave.write(poet)
-            autosave.close()
+            save()
+            local x,y = term.getSize()
+            local ax = x - 17
+            comlib.prite(ax,y,"Saved                      ")
         end
     end
 end
@@ -121,6 +128,15 @@ function clearmap()
         local _, key, _ = os.pullEvent("key")
         if key == keys.c then
             map = {}
+            local x,y = term.getSize()
+            term.clear()
+            for i = 1,4 do
+                comlib.prite(i,1," ",colors.white,btable[i])
+            end
+            local ax = x - 17
+            comlib.prite(ax,y,"Cleared                      ")
+            comlib.prite(x-12,1,"ComPaint v"..ver)
+            save()
         end
     end
 end
@@ -130,4 +146,3 @@ while true do
     parallel.waitForAny(clrbutton,draw,sbug,termcheck,savecheck,clearmap)
     sleep(0.1)
 end
-
