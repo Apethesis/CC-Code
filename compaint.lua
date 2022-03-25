@@ -36,28 +36,16 @@ if not fs.exists("./comlib.lua") then
     htg.close()
 end
 local comlib = require("comlib")
-
+local map = {}
 term.clear()
 local colr = colors.white
 local btable = {
     [1] = colors.white,
     [2] = colors.orange,
     [3] = colors.magenta,
-    [4] = colors.lightBlue,
-    [5] = colors.yellow,
-    [6] = colors.lime,
-    [7] = colors.pink,
-    [8] = colors.gray,
-    [9] = colors.lightGray,
-    [10] = colors.cyan,
-    [11] = colors.purple,
-    [12] = colors.blue,
-    [13] = colors.brown,
-    [14] = colors.green,
-    [15] = colors.red,
-    [16] = colors.black
+    [4] = colors.black
 }
-for i = 1,16 do
+for i = 1,4 do
     comlib.prite(i,1," ",colors.white,btable[i])
 end
 function clrbutton()
@@ -77,6 +65,7 @@ function draw()
         local eventType, _, _, _, _ = os.pullEvent()
         if y > 1 then
             comlib.prite(x,y," ",colors.white,btable[colr])
+            map[x][y] = btable[colr]
             local ex,ey = term.getSize()
             local ax = ex - 17
             comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
@@ -85,6 +74,7 @@ function draw()
                 comlib.prite(dx,dy," ",colors.white,btable[colr])
                 comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
                 sleep()
+                map[dx][dy] = btable[colr]
             end
         end
     end
@@ -100,6 +90,9 @@ end
 function termcheck()
     while true do
         os.pullEventRaw("terminate") -- terminate can only be pulled via Raw
+        local autosave = fs.open("/save.cimg","w")
+        autosave.write(map)
+        autosave.close()
         term.clear()
         term.setCursorPos(1,1)
         error("",0) -- to make the program exit we throw an invisible error
