@@ -1,4 +1,4 @@
-local ver = 2.2
+local ver = 2.3
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
