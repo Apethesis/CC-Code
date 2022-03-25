@@ -1,19 +1,18 @@
-local ver = "2.2"
+local ver = 2.2
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
-local versionNumber = version:match("= (.+)")
---if not (ver == versionNumber) then
---    fs.delete("./compaint.lua")
---    fs.delete("./comlib.lua")
---    local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
---    local newver = fs.open("./compaint.lua","w")
---    newver.write(request.readAll())
---    request.close()
---    newver.close()
---    error("ComPaint updated.",0)
---end
--- autoupdate is fucked
+local verNum = tonumber(version:match("= (.+)"))
+if not (ver == verNum) then
+    fs.delete("./compaint.lua")
+    fs.delete("./comlib.lua")
+    local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
+    local newver = fs.open("./compaint.lua","w")
+    newver.write(request.readAll())
+    request.close()
+    newver.close()
+    error("ComPaint updated.",0)
+end
 print("This program is still in beta, and isn't stable.")
 print("Do you wish to continue? (yes/no)")
 local beta = read()
