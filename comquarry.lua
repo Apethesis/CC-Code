@@ -22,7 +22,9 @@ local keytable = {
     ["s"] = turtle.back,
     ["z"] = turtle.dig,
     ["x"] = turtle.digUp,
-    ["c"] = turtle.digDown
+    ["c"] = turtle.digDown,
+    ["ctrl"] = turtle.down,
+    ["shift"] = turtle.up
 }
 if modem.isOpen(4221) == false then
     modem.open(4221)
