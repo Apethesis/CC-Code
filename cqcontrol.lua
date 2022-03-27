@@ -21,7 +21,9 @@ local keytable = {
     [keys.s] = "s",
     [keys.z] = "z",
     [keys.x] = "x",
-    [keys.c] = "c"
+    [keys.c] = "c",
+    [keys.leftControl] = "ctrl",
+    [keys.leftShift] = "shift"
 }
 if modem.isOpen(4221) == false then
     modem.open(4221)
@@ -35,6 +37,8 @@ print("S = Backwards")
 print("Z = Dig")
 print("X = Dig Up")
 print("C = Dig Down")
+print("Left Shift = Up")
+print("Left Control = Down")
 while true do
     local event, key, is_held = os.pullEvent("key")
     modem.transmit(4221,4221,keytable[key])
