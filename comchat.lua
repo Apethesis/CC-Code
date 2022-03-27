@@ -1,4 +1,4 @@
-local ver = 1.4
+local ver = 1.6
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comchat.lua")
 local version = request.readLine()
 request.close()
@@ -28,6 +28,7 @@ if modem.isOpen(4557) == false then
 end
 local ttable = {}
 local rtable = {}
+local cooldown = false
 if fs.exists("/.exodus/lesserchat/settings") == false then
     local sfile = fs.open("/.exodus/lesserchat/settings","w")
     ttable["name"] = nil
@@ -44,9 +45,16 @@ end
 function send()
     while true do
         local msg = read()
-        ttable["message"] = msg
-        modem.transmit(4557,4557,ttable)
-        print(ttable["name"].." > "..msg)
+		if string.len(msg) > 100 then
+            print("System > Cannot send a message longer than 100 characters.")
+        elseif string.len(msg) > 0 and string.len(msg) < 100 then
+            ttable["message"] = msg
+            modem.transmit(4557,4557,ttable)
+            print(ttable["name"].." > "..msg)
+            cooldown = true
+        elseif cooldown == true then
+            print("Cooldown active.")
+        end
         sleep()
     end
 end
@@ -60,7 +68,16 @@ function recieve()
         sleep()
     end
 end
+function cooler()
+    while true do
+        if cooldown == true then
+            sleep(1)
+            cooldown = false
+        end
+        sleep()
+    end
+end
 while true do
-    parallel.waitForAny(recieve,send)
+    parallel.waitForAny(recieve,send,cooler)
     sleep()
 end
