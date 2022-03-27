@@ -1,4 +1,4 @@
-local ver = 1.1
+local ver = 1.2
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comchat.lua")
 local version = request.readLine()
 request.close()
@@ -7,11 +7,11 @@ if not (ver == verNum) then
     fs.delete("./comchat.lua")
     fs.delete("./comlib.lua")
     local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comchat.lua")
-    local newver = fs.open("./compaint.lua","w")
+    local newver = fs.open("./comchat.lua","w")
     newver.write(request.readAll())
     request.close()
     newver.close()
-    error("ComPaint updated.",0)
+    error("ComChat updated.",0)
 end
 local modem = peripheral.find("modem") or error("No modem attached","0")
 if fs.exists("./comlib.lua") == false then
