@@ -21,14 +21,15 @@ if fs.exists("./comlib.lua") == false then
     htf.close()
     htg.close()
 end
-if fs.exists("./sha256.lua") == false then
-    local htg = http.get("https://pastebin.com/raw/6UV4qfNF")
-    local htf = fs.open("./sha256.lua","w")
+if fs.exists("./encdec.lua") == false then
+    local htg = http.get("https://pastebin.com/raw/WRTfH0yx")
+    local htf = fs.open("./encdec.lua","w")
     htf.write(htg.readAll())
     htf.close()
     htg.close()
 end
 local comlib = require("comlib")
+local encdec = require("encdec")
 if modem.isOpen(4557) == false then
     modem.open(4557)
     modem.transmit(4557,4557,"Channel open.")
@@ -52,7 +53,7 @@ function send()
     while true do
         local msg = read()
         ttable["message"] = msg
-        modem.transmit(4557,4557,ttable)
+        modem.transmit(4557,4557,encdec.encrypt(ttable,"exodusstudios"))
         print(ttable["name"].." > "..msg)
         sleep()
     end
@@ -60,7 +61,7 @@ end
 function recieve()
     while true do
         local _,_,_,_,rmsg,_ = os.pullEvent("modem_message")
-        rtable = rmsg
+        encdec.decrypt(rtable,"exodusstudios") = rmsg
         if rtable["name"] ~= ttable["name"] and rtable["message"] ~= msg then
             print(rtable["name"].." > "..rtable["message"])
         end
