@@ -1,4 +1,4 @@
-local ver = 1.2
+local ver = 1.3
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comchat.lua")
 local version = request.readLine()
 request.close()
