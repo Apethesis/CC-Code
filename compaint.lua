@@ -36,16 +36,18 @@ if not fs.exists("./comlib.lua") then
 end
 local comlib = require("comlib")
 local map = {}
-local loadsave = fs.open("save.cimg","r")
-local msave = textutils.unserialize(loadsave.readAll())
-map = msave
-loadsave.close()
-term.clear()
-for x,_temp in pairs(map) do
-    for y,data in pairs(_temp) do
-      comlib.prite(x,y," ",colors.white,data)
+if fs.exists("/save.cimg") == true then
+    local loadsave = fs.open("save.cimg","r")
+    local msave = textutils.unserialize(loadsave.readAll())
+    map = msave
+    loadsave.close()
+    term.clear()
+    for x,_temp in pairs(map) do
+        for y,data in pairs(_temp) do
+            comlib.prite(x,y," ",colors.white,data)
+        end
     end
-  end
+end
 local colr = colors.white
 local btable = {
     [1] = colors.white,
