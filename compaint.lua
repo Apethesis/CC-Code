@@ -1,4 +1,4 @@
-local ver = 2.4
+local ver = 2.5
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
@@ -48,6 +48,7 @@ if fs.exists("/save.cimg") == true then
         end
     end
 end
+term.clear()
 local colr = colors.white
 local btable = {
     [1] = colors.white,
