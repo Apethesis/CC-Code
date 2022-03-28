@@ -1,4 +1,4 @@
-local ver = 2.5
+local ver = 2.6
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
@@ -71,7 +71,7 @@ local btable = {
 for i = 1,16 do
     comlib.prite(i,1," ",colors.white,btable[i])
 end
-function clrbutton()
+function clrbutton(_,_,x,y)
     while true do
         if btable[x] and y == 1 then
             colr = btable[x]
@@ -81,7 +81,7 @@ function clrbutton()
         comlib.prite(ax,y,"Changed color to "..colr)
     end
 end
-function draw()
+function draw(_,_,x,y)
     while true do
         if y > 1 then
             comlib.prite(x,y," ",colors.white,btable[colr])
@@ -109,21 +109,13 @@ function sbug()
         sleep(0.1)
     end
 end
-function termcheck()
-    while true do
-        os.pullEventRaw("terminate") -- terminate can only be pulled via Raw
-        term.clear()
-        term.setCursorPos(1,1)
-        error("",0) -- to make the program exit we throw an invisible error
-    end
-end
 function save()
     local autosave = fs.open("save.cimg","w")
     local poet = textutils.serialize(map)
     autosave.write(poet)
     autosave.close()
 end
-function savecheck()
+function savecheck(_,key,_)
     while true do
         if key == keys.s then
             save()
@@ -133,7 +125,7 @@ function savecheck()
         end
     end
 end
-function clearmap()
+function clearmap(_,key,_)
     while true do
         if key == keys.c then
             map = {}
@@ -152,9 +144,24 @@ end
 local tx,ty = term.getSize()
 comlib.prite(tx-12,1,"ComPaint v"..ver)
 while true do
+	--[[
     local _, key, _ = os.pullEvent("key")
 	local event, button, x, y = os.pullEvent("mouse_click")
 	local eventType, _, _, _, _ = os.pullEvent()
     parallel.waitForAny(clrbutton,draw,sbug,termcheck,savecheck,clearmap)
     sleep(0.1)
+	--]]
+	local event = table.pack(os.pullEventRaw())
+    if event[1] == "mouse_click" then
+        draw(table.unpack(event))
+        clrbutton(table.unpack(event))
+    elseif event[1] == "mouse_drag" then
+        draw(table.unpack(event))
+    elseif event[1] == "terminate" then
+        term.clear()
+        term.setCursorPos(1, 1)
+		save()
+        error("", 0)
+    elseif event[1] == "key" then
+		
 end
