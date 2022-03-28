@@ -1,4 +1,4 @@
-local ver = 2.6
+local ver = 2.7
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
@@ -160,8 +160,10 @@ while true do
     elseif event[1] == "terminate" then
         term.clear()
         term.setCursorPos(1, 1)
-		save()
+	save()
         error("", 0)
     elseif event[1] == "key" then
-		
+		clearmap(table.unpack(event))
+		savecheck(table.unpack(event))
+	end
 end
