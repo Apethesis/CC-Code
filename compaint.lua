@@ -1,19 +1,6 @@
-local ver = 3.0
-local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
-local version = request.readLine()
-request.close()
-local verNum = tonumber(version:match("= (.+)"))
-
-if not (ver == verNum) then
-    fs.delete("./compaint.lua")
-    fs.delete("./comlib.lua")
-    local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
-    local newver = fs.open("./compaint.lua","w")
-    newver.write(request.readAll())
-    request.close()
-    newver.close()
-    error("ComPaint updated.",0)
-end
+local ver = 3.1
+local comlib = require "comlib"
+comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 
 print("This program is still in beta, and isn't stable.")
 print("Do you wish to continue? (yes/no)")
@@ -36,7 +23,6 @@ if not fs.exists("./comlib.lua") then
     term.setCursorPos(1,y)
     htg.close()
 end
-local comlib = require("comlib")
 local map = {}
 if fs.exists("./save.cimg") == true then
     local loadsave = fs.open("./save.cimg","r")
