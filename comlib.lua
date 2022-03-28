@@ -15,4 +15,21 @@ function comlib.prite(x,y,text,tcolor,bcolor)
     term.setBackgroundColor(colors.black)
 end -- this is prite
 
+function comlib.update(link,ver)
+    local request = http.get(link)
+    local version = request.readLine()
+    request.close()
+    local verNum = tonumber(version:match("= (.+)"))
+    if not (ver == verNum) then
+        fs.delete(shell.getRunningProgram())
+        fs.delete("./comlib.lua")
+        local request = http.get(link)
+        local newver = fs.open(shell.getRunningProgram(),"w")
+        newver.write(request.readAll())
+        request.close()
+        newver.close()
+    end
+    return true
+end
+
 return comlib
