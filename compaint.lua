@@ -1,8 +1,9 @@
-local ver = 2.7
+local ver = 3.0
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
 local version = request.readLine()
 request.close()
 local verNum = tonumber(version:match("= (.+)"))
+
 if not (ver == verNum) then
     fs.delete("./compaint.lua")
     fs.delete("./comlib.lua")
@@ -13,6 +14,7 @@ if not (ver == verNum) then
     newver.close()
     error("ComPaint updated.",0)
 end
+
 print("This program is still in beta, and isn't stable.")
 print("Do you wish to continue? (yes/no)")
 local beta = read()
@@ -36,8 +38,8 @@ if not fs.exists("./comlib.lua") then
 end
 local comlib = require("comlib")
 local map = {}
-if fs.exists("/save.cimg") == true then
-    local loadsave = fs.open("save.cimg","r")
+if fs.exists("./save.cimg") == true then
+    local loadsave = fs.open("./save.cimg","r")
     local msave = textutils.unserialize(loadsave.readAll())
     map = msave
     loadsave.close()
@@ -48,7 +50,6 @@ if fs.exists("/save.cimg") == true then
         end
     end
 end
-term.clear()
 local colr = colors.white
 local btable = {
     [1] = colors.white,
@@ -72,73 +73,55 @@ for i = 1,16 do
     comlib.prite(i,1," ",colors.white,btable[i])
 end
 function clrbutton(_,_,x,y)
-    while true do
-        if btable[x] and y == 1 then
-            colr = btable[x]
-        end
-        local x,y = term.getSize()
-        local ax = x - 17
-        comlib.prite(ax,y,"Changed color to "..colr)
+    if btable[x] and y == 1 then
+        colr = btable[x]
     end
+    local x,y = term.getSize()
+    local ax = x - 17
+    comlib.prite(ax,y,"Changed color to "..colr)
 end
 function draw(_,_,x,y)
-    while true do
-        if y > 1 then
-            comlib.prite(x,y," ",colors.white,btable[colr])
-            map[x] = map[x] or {}
-            map[x][y] = btable[colr]
-            local ex,ey = term.getSize()
-            local ax = ex - 17
-            comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
-            while eventType == "mouse_drag" do
-                local deve, dbut, dx, dy = os.pullEvent("mouse_drag")
-                comlib.prite(dx,dy," ",colors.white,btable[colr])
-                comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
-                sleep()
-                map[dx] = map[dx] or {}
-                map[dx][dy] = btable[colr]
-            end
-        end
+    if y > 1 then
+        comlib.prite(x,y," ",colors.white,btable[colr])
+        map[x] = map[x] or {}
+        map[x][y] = btable[colr]
+        local ex,ey = term.getSize()
+        local ax = ex - 17
+        comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
     end
 end
 function sbug()
-    while true do
-        local x,y = term.getSize()
-        local ay = y - 1
-        comlib.prite(x,ay,colr)
-        sleep(0.1)
-    end
+    local x,y = term.getSize()
+    local ay = y - 1
+    comlib.prite(x,ay,colr)
+    sleep(0.1)
 end
 function save()
-    local autosave = fs.open("save.cimg","w")
+    local autosave = fs.open("./save.cimg","w")
     local poet = textutils.serialize(map)
     autosave.write(poet)
     autosave.close()
 end
 function savecheck(_,key,_)
-    while true do
-        if key == keys.s then
-            save()
-            local x,y = term.getSize()
-            local ax = x - 17
-            comlib.prite(ax,y,"Saved                      ")
-        end
+    if key == keys.s then
+        save()
+        local x,y = term.getSize()
+        local ax = x - 17
+        comlib.prite(ax,y,"Saved                      ")
     end
 end
 function clearmap(_,key,_)
-    while true do
-        if key == keys.c then
-            map = {}
-            local x,y = term.getSize()
-            term.clear()
-            for i = 1,16 do
-                comlib.prite(i,1," ",colors.white,btable[i])
-            end
-            local ax = x - 17
-            comlib.prite(ax,y,"Cleared                      ")
-            comlib.prite(x-12,1,"ComPaint v"..ver)
-            save()
+    if key == keys.c then
+        map = {}
+        local x,y = term.getSize()
+        term.clear()
+        for i = 1,16 do
+            comlib.prite(i,1," ",colors.white,btable[i])
         end
+        local ax = x - 17
+        comlib.prite(ax,y,"Cleared                      ")
+        comlib.prite(x-12,1,"ComPaint v"..ver)
+        save()
     end
 end
 local tx,ty = term.getSize()
@@ -160,10 +143,10 @@ while true do
     elseif event[1] == "terminate" then
         term.clear()
         term.setCursorPos(1, 1)
-	save()
         error("", 0)
     elseif event[1] == "key" then
 		clearmap(table.unpack(event))
 		savecheck(table.unpack(event))
 	end
+    sleep()
 end
