@@ -54,14 +54,25 @@ local btable = {
     [1] = colors.white,
     [2] = colors.orange,
     [3] = colors.magenta,
-    [4] = colors.black
+    [4] = colors.lightBlue,
+    [5] = colors.yellow,
+    [6] = colors.lime,
+    [7] = colors.pink,
+    [8] = colors.gray,
+    [9] = colors.lightGray,
+    [10] = colors.cyan,
+    [11] = colors.purple,
+    [12] = colors.blue,
+    [13] = colors.brown,
+    [14] = colors.green,
+    [15] = colors.red,
+    [16] = colors.black
 }
-for i = 1,4 do
+for i = 1,16 do
     comlib.prite(i,1," ",colors.white,btable[i])
 end
 function clrbutton()
     while true do
-        local event, button, x, y = os.pullEvent("mouse_click")
         if btable[x] and y == 1 then
             colr = btable[x]
         end
@@ -72,8 +83,6 @@ function clrbutton()
 end
 function draw()
     while true do
-        local event, button, x, y = os.pullEvent("mouse_click")
-        local eventType, _, _, _, _ = os.pullEvent()
         if y > 1 then
             comlib.prite(x,y," ",colors.white,btable[colr])
             map[x] = map[x] or {}
@@ -116,7 +125,6 @@ function save()
 end
 function savecheck()
     while true do
-        local _, key, _ = os.pullEvent("key")
         if key == keys.s then
             save()
             local x,y = term.getSize()
@@ -127,12 +135,11 @@ function savecheck()
 end
 function clearmap()
     while true do
-        local _, key, _ = os.pullEvent("key")
         if key == keys.c then
             map = {}
             local x,y = term.getSize()
             term.clear()
-            for i = 1,4 do
+            for i = 1,16 do
                 comlib.prite(i,1," ",colors.white,btable[i])
             end
             local ax = x - 17
@@ -145,6 +152,9 @@ end
 local tx,ty = term.getSize()
 comlib.prite(tx-12,1,"ComPaint v"..ver)
 while true do
+    local _, key, _ = os.pullEvent("key")
+	local event, button, x, y = os.pullEvent("mouse_click")
+	local eventType, _, _, _, _ = os.pullEvent()
     parallel.waitForAny(clrbutton,draw,sbug,termcheck,savecheck,clearmap)
     sleep(0.1)
 end
