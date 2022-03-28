@@ -1,7 +1,8 @@
 local ver = 3.1
 local comlib = require "comlib"
-comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua")
-
+if comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua",ver) == true then
+	error("Update Complete",0)
+end
 print("This program is still in beta, and isn't stable.")
 print("Do you wish to continue? (yes/no)")
 local beta = read()
