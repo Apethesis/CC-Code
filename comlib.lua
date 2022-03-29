@@ -22,14 +22,14 @@ function comlib.update(link,ver)
     local verNum = tonumber(version:match("= (.+)"))
     if not (ver == verNum) then
         fs.delete(shell.getRunningProgram())
-        fs.delete("./comlib.lua")
         local request = http.get(link)
         local newver = fs.open(shell.getRunningProgram(),"w")
         newver.write(request.readAll())
         request.close()
         newver.close()
+        return true
     end
-    return true
 end
 
 return comlib
+
