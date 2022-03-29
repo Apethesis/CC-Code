@@ -1,18 +1,12 @@
 local comlib = {}
 
 function comlib.prite(x,y,text,tcolor,bcolor)
-    if tcolor == nil then
-        tcolor = colors.white
-    end
-    if bcolor == nil then
-        bcolor = colors.black
-    end
+    tcolor = tcolor or colors.white
+    bcolor = bcolor or colors.black
     term.setCursorPos(x,y)
     term.setTextColor(tcolor)
     term.setBackgroundColor(bcolor)
     term.write(text)
-    term.setTextColor(colors.white)
-    term.setBackgroundColor(colors.black)
 end -- this is prite
 
 function comlib.update(link,ver)
