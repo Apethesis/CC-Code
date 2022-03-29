@@ -139,12 +139,13 @@ while true do
     elseif event[1] == "mouse_drag" then
         draw(table.unpack(event))
     elseif event[1] == "terminate" then
+        save() 
         term.clear()
         term.setCursorPos(1, 1)
         error("", 0)
     elseif event[1] == "key" then
-		clearmap(table.unpack(event))
-		savecheck(table.unpack(event))
+        clearmap(table.unpack(event))
+	savecheck(table.unpack(event))
 	end
     sleep()
 end
