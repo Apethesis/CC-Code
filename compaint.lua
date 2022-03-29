@@ -1,4 +1,4 @@
-local ver = 3.4
+local ver = 3.5
 local comlib = require "comlib"
 if comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua",ver) == true then
 	error("Update Complete",0)
@@ -77,7 +77,7 @@ function draw(_,button,x,y)
             local ax = ex - 17
             comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
         end
-    elseif button == 3 then
+    elseif button == 2 then
         if y > 1 then
             comlib.prite(x,y," ")
             map[x] = map[x] or {}
