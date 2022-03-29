@@ -1,1 +1,1 @@
-# CC-Code
+# ComPaint
