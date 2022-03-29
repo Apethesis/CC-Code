@@ -1,4 +1,4 @@
-local ver = 3.7
+local ver = 3.8
 if not fs.exists("./comlib.lua") then
     local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comlib.lua")
     local htf = fs.open("./comlib.lua","w")
@@ -24,8 +24,9 @@ local beta = read()
 if beta == "no" then
     os.queueEvent("terminate")
 end
+term.clear()
 local map = {}
-if fs.exists("./save.cimg") == true then
+if fs.exists("./save.cimg") then
     local loadsave = fs.open("./save.cimg","r")
     local msave = textutils.unserialize(loadsave.readAll())
     map = msave
@@ -96,7 +97,7 @@ function sbug()
 end
 function save()
     local autosave = fs.open("./save.cimg","w")
-    local poet = textutils.serialize(map)
+    local poet = textutils.serialize(map,{ compact = true })
     autosave.write(poet)
     autosave.close()
 end
