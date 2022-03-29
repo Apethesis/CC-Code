@@ -1,4 +1,4 @@
-local ver = 3.2
+local ver = 3.3
 local comlib = require "comlib"
 if comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua",ver) == true then
 	error("Update Complete",0)
@@ -69,7 +69,7 @@ function clrbutton(_,_,x,y)
 end
 function draw(_,_,x,y)
     if y > 1 then
-        comlib.prite(x,y," ",colors.white,btable[colr])
+        comlib.prite(x,y," ",colors.white,colr)
         map[x] = map[x] or {}
         map[x][y] = btable[colr]
         local ex,ey = term.getSize()
