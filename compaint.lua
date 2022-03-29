@@ -71,7 +71,7 @@ function draw(_,_,x,y)
     if y > 1 then
         comlib.prite(x,y," ",colors.white,colr)
         map[x] = map[x] or {}
-        map[x][y] = btable[colr]
+        map[x][y] = colr
         local ex,ey = term.getSize()
         local ax = ex - 17
         comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
