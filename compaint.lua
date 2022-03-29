@@ -1,4 +1,4 @@
-local ver = 3.1
+local ver = 3.2
 local comlib = require "comlib"
 if comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua",ver) == true then
 	error("Update Complete",0)
@@ -63,8 +63,8 @@ function clrbutton(_,_,x,y)
     if btable[x] and y == 1 then
         colr = btable[x]
     end
-    local x,y = term.getSize()
-    local ax = x - 17
+    local tx,ty = term.getSize()
+    local ax = tx - 17
     comlib.prite(ax,y,"Changed color to "..colr)
 end
 function draw(_,_,x,y)
