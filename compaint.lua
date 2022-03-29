@@ -1,4 +1,4 @@
-local ver = 3.6
+local ver = 3.7
 if not fs.exists("./comlib.lua") then
     local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comlib.lua")
     local htf = fs.open("./comlib.lua","w")
