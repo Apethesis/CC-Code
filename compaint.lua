@@ -1,4 +1,4 @@
-local ver = 3.3
+local ver = 3.4
 local comlib = require "comlib"
 if comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua",ver) == true then
 	error("Update Complete",0)
@@ -65,16 +65,27 @@ function clrbutton(_,_,x,y)
     end
     local tx,ty = term.getSize()
     local ax = tx - 17
-    comlib.prite(ax,y,"Changed color to "..colr)
+    comlib.prite(ax,ty,"Changed color to "..colr)
 end
-function draw(_,_,x,y)
-    if y > 1 then
-        comlib.prite(x,y," ",colors.white,colr)
-        map[x] = map[x] or {}
-        map[x][y] = colr
-        local ex,ey = term.getSize()
-        local ax = ex - 17
-        comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
+function draw(_,button,x,y)
+    if button == 1 then
+        if y > 1 then
+            comlib.prite(x,y," ",colors.white,colr)
+            map[x] = map[x] or {}
+            map[x][y] = colr
+            local ex,ey = term.getSize()
+            local ax = ex - 17
+            comlib.prite(ax,ey,"Drew at x"..x.." y"..y.."        ")
+        end
+    elseif button == 3 then
+        if y > 1 then
+            comlib.prite(x,y," ")
+            map[x] = map[x] or {}
+            map[x][y] = colors.black
+            local ex,ey = term.getSize()
+            local ax = ex - 17
+            comlib.prite(ax,ey,"Erased x"..x.." y"..y.."        ")
+        end
     end
 end
 function sbug()
