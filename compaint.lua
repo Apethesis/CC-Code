@@ -1,14 +1,4 @@
-local ver = 3.5
-local comlib = require "comlib"
-if comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua",ver) == true then
-	error("Update Complete",0)
-end
-print("This program is still in beta, and isn't stable.")
-print("Do you wish to continue? (yes/no)")
-local beta = read()
-if beta == "no" then
-    os.queueEvent("terminate")
-end
+local ver = 3.6
 if not fs.exists("./comlib.lua") then
     local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comlib.lua")
     local htf = fs.open("./comlib.lua","w")
@@ -23,6 +13,16 @@ if not fs.exists("./comlib.lua") then
     print(" ")
     term.setCursorPos(1,y)
     htg.close()
+end
+local comlib = require "comlib"
+if comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua",ver) == true then
+	error("Update Complete",0)
+end
+print("This program is still in beta, and isn't stable.")
+print("Do you wish to continue? (yes/no)")
+local beta = read()
+if beta == "no" then
+    os.queueEvent("terminate")
 end
 local map = {}
 if fs.exists("./save.cimg") == true then
