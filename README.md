@@ -1,3 +1,4 @@
+Warning, the alpha branch is only for testers and or developers. Updates may not work.
 # ComPaint
 ![Made by ManaPhoenix](/unknown.png)
 ComPaint is a basic paint program made for CC.
