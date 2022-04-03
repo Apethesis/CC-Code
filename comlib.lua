@@ -44,7 +44,7 @@ function comlib.update(link, ver)
     local request = http.get(link)
     if request ~= nil then
         local txt = request.readAll()
-        local verNum = tonumber(txt:match("local ver = (.+)"))
+        local verNum = tonumber(txt:match("ver = (.-)\n"))
         request.close()
         if ver < verNum then
             local newver = fs.open(shell.getRunningProgram(), "w")
