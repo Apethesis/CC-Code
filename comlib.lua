@@ -30,8 +30,8 @@ function comlib.prite(x,y,text,tcolor,bcolor)
     expect(1, x, "number")
     expect(2, y, "number")
     expect(3, text, "string")
-    expect(4, tcolor, "string", "number")
-    expect(5, bcolor, "string", "number")
+    expect(4, tcolor, "string", "number", nil)
+    expect(5, bcolor, "string", "number", nil)
     if tcolor == nil then
         tcolor = "0"
     end
