@@ -25,11 +25,13 @@ function comlib.toBlit(color)
         string.format("%x", math.floor(math.log(color) / math.log(2)))
 end
 
-function comlib.math.tiny()
-    return -math.huge
-end
-
 function comlib.prite(x,y,text,tcolor,bcolor)
+    local expect = require "cc.expect"
+    expect(1, x, "number")
+    expect(2, y, "number")
+    expect(3, text, "string")
+    expect(4, tcolor, "string", "number")
+    expect(5, bcolor, "string", "number")
     if tcolor == nil then
         tcolor = "0"
     end
