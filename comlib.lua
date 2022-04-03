@@ -1,4 +1,5 @@
 local comlib = {}
+local expect = require("cc.expect")
 
 function comlib.toBlit(color)
     local color_hex_lookup = {
@@ -19,14 +20,12 @@ function comlib.toBlit(color)
         [colors.red] = "e",
         [colors.black] = "f"
     }
-    local expect = require("cc.expect")
     expect(1, color, "number")
     return color_hex_lookup[color] or
         string.format("%x", math.floor(math.log(color) / math.log(2)))
 end
 
 function comlib.prite(x,y,text,tcolor,bcolor)
-    local expect = require "cc.expect"
     expect(1, x, "number")
     expect(2, y, "number")
     expect(3, text, "string")
