@@ -40,6 +40,14 @@ function comlib.decode(str)
     return out
 end
 
+function comlib.wget(link,filename)
+	local req = http.get(link)
+	local fl = fs.open("./"..filename,"w")
+	fl.write(req.readAll())
+	req.close()
+	fl.close()
+end
+
 function comlib.update(link, ver)
     local request = http.get(link)
     if request ~= nil then
