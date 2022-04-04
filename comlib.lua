@@ -55,9 +55,7 @@ function comlib.update(link, ver)
         local verNum = tonumber(txt:match("ver = (.-)\n"))
         request.close()
         if ver < verNum then
-            local newver = fs.open(shell.getRunningProgram(), "w")
-            newver.write(txt)
-            newver.close()
+            comlib.wget(link,shell.getRunningProgram())
             return true
         end
     end
