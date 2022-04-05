@@ -1,7 +1,7 @@
 local ver = 4.0
 if not fs.exists("./peclib.lua") then
     local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
-    local htf = fs.open("./comlib.lua","w")
+    local htf = fs.open("./peclib.lua","w")
     local x,y = term.getSize()
     local ax = x - 17
     htf.write(htg.readAll())
