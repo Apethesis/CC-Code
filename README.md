@@ -1,6 +1,6 @@
-# ComPaint
+# PecPaint
 ![Made by ManaPhoenix](/unknown.png)
-ComPaint is a basic paint program made for CC.
+PecPaint is a basic paint program made for CC.
 It may seem very simple but it has a good amount of features.
 It's also very fast compared to... some other paint programs.
 Please run this on an Advanced Computer.
