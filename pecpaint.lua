@@ -2,16 +2,8 @@ local ver = 4.0
 if not fs.exists("./peclib.lua") then
     local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
     local htf = fs.open("./peclib.lua","w")
-    local x,y = term.getSize()
-    local ax = x - 17
     htf.write(htg.readAll())
     htf.close()
-    term.setCursorPos(ax,y)
-    term.setTextColor(colors.white)
-    term.setBackgroundColor(colors.black)
-    term.write("comlib downloaded")
-    print(" ")
-    term.setCursorPos(1,y)
     htg.close()
 end
 local peclib = require "peclib"
@@ -32,42 +24,6 @@ local btable = {
     [14] = colors.green,
     [15] = colors.red,
     [16] = colors.black
-}
-local toHex = {
-    [colors.white] = "0",
-    [colors.orange] = "1",
-    [colors.magenta] = "2",
-    [colors.lightBlue] = "3",
-    [colors.yellow] = "4",
-    [colors.lime] = "5",
-    [colors.pink] = "6",
-    [colors.gray] = "7",
-    [colors.lightGray] = "8",
-    [colors.cyan] = "9",
-    [colors.purple] = "a",
-    [colors.blue] = "b",
-    [colors.brown] = "c",
-    [colors.green] = "d",
-    [colors.red] = "e",
-    [colors.black] = "f"
-}
-local fromHex = {
-    ["0"] = colors.white,
-    ["1"] = colors.orange,
-    ["2"] = colors.magenta,
-    ["3"] = colors.lightBlue,
-    ["4"] = colors.yellow,
-    ["5"] = colors.lime,
-    ["6"] = colors.pink,
-    ["7"] = colors.gray,
-    ["8"] = colors.lightGray,
-    ["9"] = colors.cyan,
-    ["a"] = colors.purple,
-    ["b"] = colors.blue,
-    ["c"] = colors.brown,
-    ["d"] = colors.green,
-    ["e"] = colors.red,
-    ["f"] = colors.black
 }
 local tx,ty = term.getSize()
 if peclib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecpaint.lua",ver) == true then
