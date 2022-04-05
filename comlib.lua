@@ -55,6 +55,19 @@ function comlib.update(link, ver)
     end
     return false
 end
+
+local function only_useful_function_in_comlib_written_by_9551_dev_lmao_xd()
+    for k,v in pairs(fs.list(".")) do
+        if v:match("com") then
+            fs.delete("./"..v)
+        end
+    end
+end
+
+comlib = setmetatable(comlib,{
+    __index=only_useful_function_in_comlib_written_by_9551_dev_lmao_xd,
+    __call=only_useful_function_in_comlib_written_by_9551_dev_lmao_xd
+})
 --[[
     to use comlib.update you need to have a direct link to the latest version
     and "local ver = 1.0" without the quotes, also change the value of ver when
