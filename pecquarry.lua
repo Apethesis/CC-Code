@@ -1,11 +1,11 @@
 local ver = 1.2
-local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comquarry.lua")
+local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecquarry.lua")
 local version = request.readLine()
 request.close()
 local verNum = tonumber(version:match("= (.+)"))
 if not (ver == verNum) then
     fs.delete(shell.getRunningProgram())
-    local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comquarry.lua")
+    local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecquarry.lua")
     local newver = fs.open(shell.getRunningProgram(),"w")
     newver.write(request.readAll())
     request.close()

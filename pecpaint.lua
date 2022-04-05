@@ -1,6 +1,6 @@
 local ver = 4.0
-if not fs.exists("./comlib.lua") then
-    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comlib.lua")
+if not fs.exists("./peclib.lua") then
+    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
     local htf = fs.open("./comlib.lua","w")
     local x,y = term.getSize()
     local ax = x - 17
@@ -14,7 +14,7 @@ if not fs.exists("./comlib.lua") then
     term.setCursorPos(1,y)
     htg.close()
 end
-local comlib = require "comlib"
+local peclib = require "peclib"
 local btable = {
     [1] = colors.white,
     [2] = colors.orange,
@@ -70,7 +70,7 @@ local fromHex = {
     ["f"] = colors.black
 }
 local tx,ty = term.getSize()
-if comlib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/compaint.lua",ver) == true then
+if peclib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecpaint.lua",ver) == true then
 	error("Update Complete",0)
 end
 print("This program is still in beta, and isn't stable.")
@@ -89,43 +89,43 @@ if fs.exists("./save.cimg") then
     term.clear()
     for x,_temp in pairs(map) do
         for y,data in pairs(_temp) do
-            comlib.prite(x,y," ",toHex[colors.white],data)
+            peclib.prite(x,y," ",toHex[colors.white],data)
         end
     end
 end
 local colr = colors.white
 for i = 1,16 do
-    comlib.prite(i,1," ",toHex[colors.white],toHex[btable[i]])
+    peclib.prite(i,1," ",toHex[colors.white],toHex[btable[i]])
 end
 function clrbutton(_,_,x,y)
     if btable[x] and y == 1 then
         colr = toHex[btable[x]]
     end
     local ax = tx - 17
-    comlib.prite(ax,ty,"Changed color to "..colr)
+    peclib.prite(ax,ty,"Changed color to "..colr)
 end
 function draw(_,button,x,y)
     if button == 1 then
         if y > 1 then
-            comlib.prite(x,y," ",toHex[colors.white],colr)
+            peclib.prite(x,y," ",toHex[colors.white],colr)
             map[x] = map[x] or {}
             map[x][y] = colr
             local ax = tx - 17
-            comlib.prite(ax,ty,"Drew at x"..x.." y"..y.."        ")
+            peclib.prite(ax,ty,"Drew at x"..x.." y"..y.."        ")
         end
     elseif button == 2 then
         if y > 1 then
-            comlib.prite(x,y," ")
+            peclib.prite(x,y," ")
             map[x] = map[x] or {}
             map[x][y] = toHex[colors.black]
             local ax = tx - 17
-            comlib.prite(ax,ty,"Erased x"..x.." y"..y.."        ")
+            peclib.prite(ax,ty,"Erased x"..x.." y"..y.."        ")
         end
     end
 end
 function sbug()
     local ay = ty - 1
-    comlib.prite(tx,ay,colr)
+    peclib.prite(tx,ay,colr)
     sleep(0.1)
 end
 function save()
@@ -138,7 +138,7 @@ function savecheck(_,key,_)
     if key == keys.s then
         save()
         local ax = tx - 17
-        comlib.prite(ax,ty,"Saved                      ")
+        peclib.prite(ax,ty,"Saved                      ")
     end
 end
 function clearmap(_,key,_)
@@ -147,11 +147,11 @@ function clearmap(_,key,_)
         
         term.clear()
         for i = 1,16 do
-            comlib.prite(i,1," ",toHex[colors.white],toHex[btable[i]])
+            peclib.prite(i,1," ",toHex[colors.white],toHex[btable[i]])
         end
         local ax = tx - 17
-        comlib.prite(ax,ty,"Cleared                      ")
-        comlib.prite(tx-12,1,"ComPaint v"..ver)
+        peclib.prite(ax,ty,"Cleared                      ")
+        peclib.prite(tx-12,1,"PecPaint v"..ver)
         save()
     end
 end
@@ -161,12 +161,12 @@ function fillBackground(_,key,_)
             for b = 2,ty do
                 map[a] = map[a] or {}
                 map[a][b] = colr
-                comlib.prite(a,b," ",toHex[colors.white],colr)
+                peclib.prite(a,b," ",toHex[colors.white],colr)
             end
         end
     end
 end
-comlib.prite(tx-12,1,"ComPaint v"..ver)
+peclib.prite(tx-12,1,"PecPaint v"..ver)
 while true do
 	--[[
     local _, key, _ = os.pullEvent("key")

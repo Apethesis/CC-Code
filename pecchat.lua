@@ -1,27 +1,27 @@
 local ver = 1.6
-local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comchat.lua")
+local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecchat.lua")
 local version = request.readLine()
 request.close()
 local verNum = tonumber(version:match("= (.+)"))
 if not (ver == verNum) then
-    fs.delete("./comchat.lua")
-    fs.delete("./comlib.lua")
-    local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comchat.lua")
+    fs.delete("./pecchat.lua")
+    fs.delete("./peclib.lua")
+    local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecchat.lua")
     local newver = fs.open("./comchat.lua","w")
     newver.write(request.readAll())
     request.close()
     newver.close()
-    error("ComChat updated.",0)
+    error("PecChat updated.",0)
 end
 local modem = peripheral.find("modem") or error("No modem attached","0")
-if fs.exists("./comlib.lua") == false then
-    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/comlib.lua")
-    local htf = fs.open("./comlib.lua","w")
+if fs.exists("./peclib.lua") == false then
+    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
+    local htf = fs.open("./peclib.lua","w")
     htf.write(htg.readAll())
     htf.close()
     htg.close()
 end
-local comlib = require("comlib")
+local peclib = require("peclib")
 if modem.isOpen(4557) == false then
     modem.open(4557)
     modem.transmit(4557,4557,"Channel open.")
