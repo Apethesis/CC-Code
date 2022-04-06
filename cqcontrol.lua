@@ -7,7 +7,7 @@ if not fs.exists("./peclib.lua") then
     htg.close()
 end
 local peclib = require "peclib"
-if peclib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecchat.lua",ver) then
+if peclib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/cqcontrol.lua",ver) then
 	error("PecChat updated.",0)
 end
 local modem = peripheral.find("modem") or error("No modem attached","0")
