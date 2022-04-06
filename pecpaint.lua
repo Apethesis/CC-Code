@@ -53,14 +53,14 @@ local colr = colors.white
 for i = 1,16 do
     peclib.prite(i,1," ",toHex[colors.white],toHex[btable[i]])
 end
-function clrbutton(_,_,x,y)
+local function clrbutton(_,_,x,y)
     if btable[x] and y == 1 then
         colr = toHex[btable[x]]
     end
     local ax = tx - 17
     peclib.prite(ax,ty,"Changed color to "..colr)
 end
-function draw(_,button,x,y)
+local function draw(_,button,x,y)
     if button == 1 then
         if y > 1 then
             peclib.prite(x,y," ",toHex[colors.white],colr)
@@ -79,25 +79,20 @@ function draw(_,button,x,y)
         end
     end
 end
-function sbug()
-    local ay = ty - 1
-    peclib.prite(tx,ay,colr)
-    sleep(0.1)
-end
-function save()
+local function save()
     local autosave = fs.open("./save.cimg","w")
     local poet = textutils.serialize(map,{ compact = true })
     autosave.write(poet)
     autosave.close()
 end
-function savecheck(_,key,_)
+local function savecheck(_,key,_)
     if key == keys.s then
         save()
         local ax = tx - 17
         peclib.prite(ax,ty,"Saved                      ")
     end
 end
-function clearmap(_,key,_)
+local function clearmap(_,key,_)
     if key == keys.c then
         map = {}
         
@@ -111,7 +106,7 @@ function clearmap(_,key,_)
         save()
     end
 end
-function fillBackground(_,key,_)
+local function fillBackground(_,key,_)
     if key == keys.f then
         for a = 1,tx do
             for b = 2,ty do
@@ -124,13 +119,6 @@ function fillBackground(_,key,_)
 end
 peclib.prite(tx-12,1,"PecPaint v"..ver)
 while true do
-	--[[
-    local _, key, _ = os.pullEvent("key")
-	local event, button, x, y = os.pullEvent("mouse_click")
-	local eventType, _, _, _, _ = os.pullEvent()
-    parallel.waitForAny(clrbutton,draw,sbug,termcheck,savecheck,clearmap)
-    sleep(0.1)
-	--]]
 	local event = table.pack(os.pullEventRaw())
     if event[1] == "mouse_click" then
         draw(table.unpack(event))
