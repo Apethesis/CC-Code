@@ -31,7 +31,7 @@ else
     local sfile = fs.open("/.exodus/lesserchat/settings","r")
     ttable = textutils.unserialize(sfile.readAll())
 end
-function send()
+local function send()
     while true do
         local msg = read()
 		if string.len(msg) > 100 then
@@ -47,7 +47,7 @@ function send()
         sleep()
     end
 end
-function recieve()
+local function recieve()
     while true do
         local _,_,_,_,rmsg,_ = os.pullEvent("modem_message")
         rtable = rmsg
@@ -57,7 +57,7 @@ function recieve()
         sleep()
     end
 end
-function cooler()
+local function cooler()
     while true do
         if cooldown == true then
             sleep(1)
