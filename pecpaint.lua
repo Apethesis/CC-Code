@@ -45,17 +45,17 @@ if fs.exists("./save.cimg") then
     term.clear()
     for x,_temp in pairs(map) do
         for y,data in pairs(_temp) do
-            peclib.prite(x,y," ",toHex[colors.white],data)
+            peclib.prite(x,y," ",peclib.toBlit(colors.white),data)
         end
     end
 end
 local colr = colors.white
 for i = 1,16 do
-    peclib.prite(i,1," ",toHex[colors.white],toHex[btable[i]])
+    peclib.prite(i,1," ",peclib.toBlit(colors.white),peclib.toBlit(btable[i]))
 end
 local function clrbutton(_,_,x,y)
     if btable[x] and y == 1 then
-        colr = toHex[btable[x]]
+        colr = peclib.toBlit(btable[x])
     end
     local ax = tx - 17
     peclib.prite(ax,ty,"Changed color to "..colr)
@@ -63,7 +63,7 @@ end
 local function draw(_,button,x,y)
     if button == 1 then
         if y > 1 then
-            peclib.prite(x,y," ",toHex[colors.white],colr)
+            peclib.prite(x,y," ",peclib.toBlit(colors.white),colr)
             map[x] = map[x] or {}
             map[x][y] = colr
             local ax = tx - 17
@@ -73,7 +73,7 @@ local function draw(_,button,x,y)
         if y > 1 then
             peclib.prite(x,y," ")
             map[x] = map[x] or {}
-            map[x][y] = toHex[colors.black]
+            map[x][y] = peclib.toBlit(colors.black)
             local ax = tx - 17
             peclib.prite(ax,ty,"Erased x"..x.." y"..y.."        ")
         end
@@ -98,7 +98,7 @@ local function clearmap(_,key,_)
         
         term.clear()
         for i = 1,16 do
-            peclib.prite(i,1," ",toHex[colors.white],toHex[btable[i]])
+            peclib.prite(i,1," ",peclib.toBlit(colors.white),peclib.toBlit(btable[i]))
         end
         local ax = tx - 17
         peclib.prite(ax,ty,"Cleared                      ")
@@ -112,7 +112,7 @@ local function fillBackground(_,key,_)
             for b = 2,ty do
                 map[a] = map[a] or {}
                 map[a][b] = colr
-                peclib.prite(a,b," ",toHex[colors.white],colr)
+                peclib.prite(a,b," ",peclib.toBlit(colors.white),colr)
             end
         end
     end
