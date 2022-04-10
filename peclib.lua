@@ -1,17 +1,28 @@
 local peclib = {}
-local color_hex_lookup = {}
+local expect = require("cc.expect")
+local color_hex_lookup = {
+    [colors.white] = "0",
+    [colors.orange] = "1",
+    [colors.magenta] = "2",
+    [colors.lightBlue] = "3",
+    [colors.yellow] = "4",
+    [colors.lime] = "5",
+    [colors.pink] = "6",
+    [colors.gray] = "7",
+    [colors.lightGray] = "8",
+    [colors.cyan] = "9",
+    [colors.purple] = "a",
+    [colors.blue] = "b",
+    [colors.brown] = "c",
+    [colors.green] = "d",
+    [colors.red] = "e",
+    [colors.black] = "f"
+}
 
 function peclib.toBlit(color)
-    if color == nil or type(color) ~= "number" then
-        return nil
-    end
-    return color_hex_lookup[color] or string.format("%x", math.floor(math.log(color) / math.log(2)))
-end
-
-for i,v in pairs(colors) do
-    if type(v) == "number" then
-        color_hex_lookup[i] = peclib.toBlit(v)
-    end
+    expect(1, color, "number")
+    return color_hex_lookup[color] or
+        string.format("%x", math.floor(math.log(color) / math.log(2)))
 end
 
 function peclib.prite(x, y, text, tcolor, bcolor)
