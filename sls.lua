@@ -26,9 +26,9 @@ end
 print(textutils.serialize(ftbl))
 
 -- Printing it out
-term.clear()
+local cx,cy = term.getCursorPos()
 local ax = 1
-local ay = 1
+local ay = cy
 for k,v in pairs(ftbl) do
     local ext = v:match("[^%.]+$")
     local filesize = fs.getSize(v)
