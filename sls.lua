@@ -11,7 +11,7 @@ end
 local peclib = require("peclib")
 
 -- Making the file table
-local fll = fs.list("./")
+local fll = fs.list("/"..shell.dir())
 local ftbl = {}
 local fldrnum = 1
 for k,v in pairs(fll) do
@@ -23,7 +23,6 @@ for k,v in pairs(fll) do
         table.insert(ftbl, v)
     end
 end
-print(textutils.serialize(ftbl))
 
 -- Printing it out
 local cx,cy = term.getCursorPos()
