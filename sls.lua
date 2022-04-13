@@ -58,9 +58,9 @@ for k,v in pairs(ftbl) do
         peclib.prite(ax,ay,v.."    "..kbsize.."KB",colors.blue,colors.black)
         ay = ay + 1
     end
-    if ext ~= "lua" and fs.isDir(v) ~= true and fs.isReadOnly ~= true then
+    if ext ~= "lua" and fs.isDir(v) ~= true and fs.isReadOnly() ~= true then
         peclib.prite(ax,ay,v.."    "..kbsize.."KB",colors.white,colors.black)
         ay = ay + 1
     end
 end
-print("")
+print()
