@@ -55,14 +55,14 @@ for i = 1,16 do
     peclib.prite(i,1," ",peclib.toBlit(colors.white),peclib.toBlit(btable[i]))
 end
 local function clrbutton(_,_,x,y)
-    if btable[x] and y == 1 and guiHidden = false then
+    if btable[x] and y == 1 and guiHidden == false then
         colr = peclib.toBlit(btable[x])
     end
     local ax = tx - 17
     peclib.prite(ax,ty,"Changed color to "..colr)
 end
 local function draw(_,button,x,y)
-    if button == 1 and guiHidden = false then
+    if button == 1 and guiHidden == false then
         if y > 1 then
             peclib.prite(x,y," ",peclib.toBlit(colors.white),colr)
             map[x] = map[x] or {}
@@ -70,7 +70,7 @@ local function draw(_,button,x,y)
             local ax = tx - 17
             peclib.prite(ax,ty,"Drew at x"..x.." y"..y.."        ")
         end
-    elseif button == 2 and guiHidden = false then
+    elseif button == 2 and guiHidden == false then
         if y > 1 then
             peclib.prite(x,y," ")
             map[x] = map[x] or {}
@@ -87,14 +87,14 @@ local function save()
     autosave.close()
 end
 local function savecheck(_,key,_)
-    if key == keys.s and guiHidden = false then
+    if key == keys.s and guiHidden == false then
         save()
         local ax = tx - 17
         peclib.prite(ax,ty,"Saved                      ")
     end
 end
 local function clearmap(_,key,_)
-    if key == keys.c and guiHidden = false then
+    if key == keys.c and guiHidden == false then
         map = {}
         
         term.clear()
@@ -108,7 +108,7 @@ local function clearmap(_,key,_)
     end
 end
 local function fillBackground(_,key,_)
-    if key == keys.f and guiHidden = false then
+    if key == keys.f and guiHidden == false then
         for a = 1,tx do
             for b = 2,ty do
                 map[a] = map[a] or {}
@@ -119,7 +119,7 @@ local function fillBackground(_,key,_)
     end
 end
 local function hideGui(_,key,_)
-    if key == keys.h and guiHidden = false then
+    if key == keys.h and guiHidden == false then
         save()
         term.clear()
         for x,_temp in pairs(map) do
@@ -129,7 +129,7 @@ local function hideGui(_,key,_)
         end
         guiHidden = true
     end
-    if key == keys.h and guiHidden = true then
+    if key == keys.h and guiHidden == true then
         peclib.prite(tx-12,1,"PecPaint v"..ver)
         for i = 1,16 do
             peclib.prite(i,1," ",peclib.toBlit(colors.white),peclib.toBlit(btable[i]))
