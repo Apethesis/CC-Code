@@ -19,13 +19,13 @@ local color_hex_lookup = {
     [colors.black] = "f"
 }
 
-function peclib.toBlit(color)
+function peclib.toBlit(color) -- peclib.toBlit(a colors value)
     expect(1, color, "number")
     return color_hex_lookup[color] or
         string.format("%x", math.floor(math.log(color) / math.log(2)))
 end
 
-function peclib.prite(x, y, text, tcolor, bcolor)
+function peclib.prite(x, y, text, tcolor, bcolor) -- peclib.prite(x,y,text,text color,background color)
     x = x or 0
     y = y or 0
     text = text or ""
@@ -37,13 +37,13 @@ function peclib.prite(x, y, text, tcolor, bcolor)
     term.blit(text, tcolor:rep(#text), bcolor:rep(#text))
 end -- this is prite
 
-function peclib.encode(tbl)
+function peclib.encode(tbl) -- peclib.encode(a table to encode)
     local out = tostring(#tbl[#tbl]) .. "|"
     for k, v in ipairs(tbl) do out = (out .. v) or "" end
     return out
 end
 
-function peclib.decode(str)
+function peclib.decode(str) -- peclib.decode(a string to decode)
     local len_or, str = str:match("(%d.-)|(.+)")
     local len = #str / len_or
     local out = {}
@@ -51,7 +51,7 @@ function peclib.decode(str)
     return out
 end
 
-function peclib.update(link, ver)
+function peclib.update(link, ver) -- peclib.update(a link to the raw file, and your version variable. must be a number)
     local request = http.get(link)
     if request ~= nil then
         local txt = request.readAll()
@@ -66,10 +66,5 @@ function peclib.update(link, ver)
     end
     return false
 end
---[[
-    to use peclib.update you need to have a direct link to the latest version
-    and "local ver = 1.0" without the quotes, also change the value of ver when
-    you update the program.
-]]
 
 return peclib
