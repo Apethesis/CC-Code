@@ -37,6 +37,11 @@ function peclib.prite(x, y, text, tcolor, bcolor) -- peclib.prite(x,y,text,text 
     term.blit(text, tcolor:rep(#text), bcolor:rep(#text))
 end -- this is prite
 
+function peclib.clearLine(y)
+    local x,_ = term.getSize()
+    peclib.prite(x,y," ":rep(x))
+end
+
 function peclib.encode(tbl) -- peclib.encode(a table to encode)
     local out = tostring(#tbl[#tbl]) .. "|"
     for k, v in ipairs(tbl) do out = (out .. v) or "" end
@@ -63,6 +68,17 @@ function peclib.update(link, ver) -- peclib.update(a link to the raw file, and y
             newver.close()
             return true
         end
+    end
+    return false
+end
+
+function peclib.wget(link,filename)
+    local request = http.get(link)
+    if request ~= nil then
+        local txt = request.readAll()
+        local fl = fs.open("./"..filename,"w")
+        fl.write(txt)
+        return true
     end
     return false
 end
