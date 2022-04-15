@@ -1,4 +1,14 @@
-local ver = 4.0
+local ver = 4.1
+local args = {...}
+local svfl = "./save.cimg"
+if args == {} then
+    svfl = svfl
+elseif args ~= {} then
+    if args[1]:match("[^%.]+$") ~= "cimg" then
+        error("Must be in .cimg format",0)
+    end
+    svfl = args[1]
+end
 if not fs.exists("./peclib.lua") then
     local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
     local htf = fs.open("./peclib.lua","w")
@@ -38,8 +48,8 @@ if beta == "no" then
 end
 term.clear()
 local map = {}
-if fs.exists("./save.cimg") then
-    local loadsave = fs.open("./save.cimg","r")
+if fs.exists(svfl) then
+    local loadsave = fs.open(svfl,"r")
     local msave = textutils.unserialize(loadsave.readAll())
     map = msave
     loadsave.close()
@@ -81,7 +91,7 @@ local function draw(_,button,x,y)
     end
 end
 local function save()
-    local autosave = fs.open("./save.cimg","w")
+    local autosave = fs.open(svfl,"w")
     local poet = textutils.serialize(map,{ compact = true })
     autosave.write(poet)
     autosave.close()
