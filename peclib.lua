@@ -37,20 +37,6 @@ function peclib.prite(x, y, text, tcolor, bcolor) -- peclib.prite(x,y,text,text 
     term.blit(text, tcolor:rep(#text), bcolor:rep(#text))
 end -- this is prite
 
-function peclib.encode(tbl) -- peclib.encode(a table to encode)
-    local out = tostring(#tbl[#tbl]) .. "|"
-    for k, v in ipairs(tbl) do out = (out .. v) or "" end
-    return out
-end
-
-function peclib.decode(str) -- peclib.decode(a string to decode)
-    local len_or, str = str:match("(%d.-)|(.+)")
-    local len = #str / len_or
-    local out = {}
-    for i = 1, len do out[i] = str:sub(i * len_or - len_or + 1, i * len_or) end
-    return out
-end
-
 function peclib.update(link, ver) -- peclib.update(a link to the raw file, and your version variable. must be a number)
     local request = http.get(link)
     if request ~= nil then
