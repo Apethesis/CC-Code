@@ -37,11 +37,6 @@ function peclib.prite(x, y, text, tcolor, bcolor) -- peclib.prite(x,y,text,text 
     term.blit(text, tcolor:rep(#text), bcolor:rep(#text))
 end -- this is prite
 
-function peclib.clearLine(y)
-    local x,_ = term.getSize()
-    peclib.prite(x,y," ":rep(x))
-end
-
 function peclib.encode(tbl) -- peclib.encode(a table to encode)
     local out = tostring(#tbl[#tbl]) .. "|"
     for k, v in ipairs(tbl) do out = (out .. v) or "" end
