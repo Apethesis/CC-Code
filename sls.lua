@@ -24,6 +24,16 @@ for k,v in pairs(fll) do
     end
 end
 
+-- Aligned size text - Virtio
+local sizex = 0
+local strlen = 0
+for i, v in ipairs(ftbl) do
+	if strlen < #v then
+		strlen = #v
+		sizex = #v + 2
+	end
+end
+
 -- Printing it out
 local cx,cy = term.getCursorPos()
 local ax = 1
@@ -44,7 +54,7 @@ for k,v in pairs(ftbl) do
     end
     if fs.isReadOnly(v) then
         if v ~= "rom" then
-            peclib.prite(ax,ay,v.."    "..kbsize.."KB",colors.orange,colors.black)
+            peclib.prite(ax,ay,v..string.rep(" ", sizex-#v)..kbsize.."KB",colors.orange,colors.black)
             ay = ay + 1
         end
     end
@@ -55,11 +65,11 @@ for k,v in pairs(ftbl) do
         end
     end
     if ext == "lua" then
-        peclib.prite(ax,ay,v.."    "..kbsize.."KB",colors.blue,colors.black)
+        peclib.prite(ax,ay,v..string.rep(" ", sizex-#v)..kbsize.."KB",colors.blue,colors.black)
         ay = ay + 1
     end
     if ext ~= "lua" and fs.isDir(v) ~= true and fs.isReadOnly(v) ~= true then
-        peclib.prite(ax,ay,v.."    "..kbsize.."KB",colors.white,colors.black)
+        peclib.prite(ax,ay,v..string.rep(" ", sizex-#v)..kbsize.."KB",colors.white,colors.black)
         ay = ay + 1
     end
 end
