@@ -1,4 +1,4 @@
-local ver = 4.1.1
+local ver = 4.1.2
 local args = {...}
 local svfl = "./save.cimg"
 if args[1] ~= nil then
@@ -168,5 +168,4 @@ while true do
 	    savecheck(table.unpack(event))
         fillBackground(table.unpack(event))
 	end
-    sleep()
 end
