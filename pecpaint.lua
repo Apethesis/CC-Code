@@ -1,9 +1,7 @@
-local ver = 4.1
+local ver = 4.1.1
 local args = {...}
 local svfl = "./save.cimg"
-if args == {} then
-    svfl = svfl
-elseif args ~= {} then
+if args[1] ~= nil then
     if args[1]:match("[^%.]+$") ~= "cimg" then
         error("Must be in .cimg format",0)
     end
@@ -36,13 +34,17 @@ local btable = {
     [16] = colors.black
 }
 local tx,ty = term.getSize()
-if peclib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecpaint.lua",ver) == true then
-	error("Update Complete",0)
-end
 print("This program is still in beta, and isn't stable.")
 print("Do you wish to continue? (yes/no)")
 local beta = read()
 local guiHidden = false
+if http.get("https://github.com/Apethesis/CC-Code/raw/main/pecpaint.lua").readAll() ~= fs.open("pecpaint.lua","r").readAll() then
+    print("There is a new version of this program available, do you wish to update? (yes/no)")
+    local update = string.lower(read())
+    if update == "yes" then
+        peclib.update("https://github.com/Apethesis/CC-Code/raw/main/pecpaint.lua",ver)
+    end
+end
 if beta == "no" then
     os.queueEvent("terminate")
 end
@@ -113,7 +115,7 @@ local function clearmap(_,key,_)
         end
         local ax = tx - 17
         peclib.prite(ax,ty,"Cleared                      ")
-        peclib.prite(tx-12,1,"PecPaint v"..ver)
+        peclib.prite(tx-14,1,"PecPaint v"..ver)
         save()
     end
 end
@@ -140,14 +142,14 @@ local function hideGui(_,key,_)
         guiHidden = true
     end
     if key == keys.h and guiHidden == true then
-        peclib.prite(tx-12,1,"PecPaint v"..ver)
+        peclib.prite(tx-14,1,"PecPaint v"..ver)
         for i = 1,16 do
             peclib.prite(i,1," ",peclib.toBlit(colors.white),peclib.toBlit(btable[i]))
         end
         guiHidden = false
     end
 end
-peclib.prite(tx-12,1,"PecPaint v"..ver)
+peclib.prite(tx-14,1,"PecPaint v"..ver)
 while true do
 	local event = table.pack(os.pullEventRaw())
     if event[1] == "mouse_click" then
