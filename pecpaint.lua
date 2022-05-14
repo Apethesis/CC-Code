@@ -1,4 +1,5 @@
-local ver = 4.1.2
+local wver = 4.12
+local ver = "4.1.2"
 local args = {...}
 local svfl = "./save.cimg"
 if args[1] ~= nil then
@@ -42,7 +43,7 @@ if http.get("https://github.com/Apethesis/CC-Code/raw/main/pecpaint.lua").readAl
     print("There is a new version of this program available, do you wish to update? (yes/no)")
     local update = string.lower(read())
     if update == "yes" then
-        peclib.update("https://github.com/Apethesis/CC-Code/raw/main/pecpaint.lua",ver)
+        peclib.update("https://github.com/Apethesis/CC-Code/raw/main/pecpaint.lua",wver)
     end
 end
 if beta == "no" then
