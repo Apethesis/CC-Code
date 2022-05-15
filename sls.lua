@@ -1,6 +1,6 @@
 -- It stands for "Shitty LiSt"
 
--- Getting peclib if it doesnt exist
+-- Peclib :face_vomiting: 
 if not fs.exists("./peclib.lua") then
     local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
     local htf = fs.open("./peclib.lua","w")
@@ -28,49 +28,45 @@ end
 local sizex = 0
 local strlen = 0
 for i, v in ipairs(ftbl) do
-	if strlen < #v then
-		strlen = #v
-		sizex = #v + 2
-	end
+    if strlen < #v then
+        strlen = #v
+        sizex = #v + 2
+    end
 end
 
 -- Printing it out
 local cx,cy = term.getCursorPos()
+local writeSize, h = term.getSize()
 local ax = 1
 local ay = cy
 for k,v in pairs(ftbl) do
     local ext = v:match("[^%.]+$")
     local filesize = fs.getSize(v)
     local kbsize = string.sub(tostring(filesize / 1024), 1, 4)
+    local writeSize = true
+    local color = colors.white
     if fs.isReadOnly(v) and fs.isDir(v) then
-        if v == "rom" then
-            peclib.prite(ax,ay,"rom",colors.red,colors.black)
-            ay = ay + 1
-        end
-        if v ~= "rom" then
-            peclib.prite(ax,ay,v,colors.red,colors.black)
-            ay = ay + 1
-        end
+      color = colors.red
+      writeSize = false
+    elseif fs.isReadOnly(v) then
+      color = colors.orange
+    elseif fs.isDir(v) then -- Can't be read only.
+      color = colors.yellow
     end
-    if fs.isReadOnly(v) then
-        if v ~= "rom" then
-            peclib.prite(ax,ay,v..string.rep(" ", sizex-#v)..kbsize.."KB",colors.orange,colors.black)
-            ay = ay + 1
-        end
-    end
-    if fs.isDir(v) then
-        if v ~= "rom" then
-            peclib.prite(ax,ay,v,colors.yellow,colors.black)
-            ay = ay + 1
-        end
-    end
+
     if ext == "lua" then
-        peclib.prite(ax,ay,v..string.rep(" ", sizex-#v)..kbsize.."KB",colors.blue,colors.black)
-        ay = ay + 1
+      color = colors.blue
     end
-    if ext ~= "lua" and fs.isDir(v) ~= true and fs.isReadOnly(v) ~= true then
-        peclib.prite(ax,ay,v..string.rep(" ", sizex-#v)..kbsize.."KB",colors.white,colors.black)
-        ay = ay + 1
+    if ay == h then
+      term.scroll(1)
+      ay = ay - 1
     end
-end
-print()
+    if writeSize then
+      peclib.prite(ax, ay, v..(" "):rep(sizex-#v)..kbsize.."KB", color, colors.black)
+    else
+      peclib.prite(ax, ay, v, color, colors.black)
+    end
+    ay = ay+1
+  end
+
+  print()
