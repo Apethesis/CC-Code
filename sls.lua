@@ -1,14 +1,7 @@
 -- It stands for "Shitty LiSt"
 
--- Getting peclib if it doesnt exist
-if not fs.exists("./peclib.lua") then
-    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
-    local htf = fs.open("./peclib.lua","w")
-    htf.write(htg.readAll())
-    htf.close()
-    htg.close()
-end
-local peclib = require("peclib")
+-- No more peclib.
+-- Cry about it.
 
 -- Making the file table
 local fll = fs.list("/"..shell.dir())
@@ -28,10 +21,10 @@ end
 local sizex = 0
 local strlen = 0
 for i, v in ipairs(ftbl) do
-	if strlen < #v then
-		strlen = #v
-		sizex = #v + 2
-	end
+    if strlen < #v then
+        strlen = #v
+        sizex = #v + 2
+    end
 end
 
 -- Printing it out
@@ -42,35 +35,26 @@ for k,v in pairs(ftbl) do
     local ext = v:match("[^%.]+$")
     local filesize = fs.getSize(v)
     local kbsize = string.sub(tostring(filesize / 1024), 1, 4)
+    local writeSize = true
     if fs.isReadOnly(v) and fs.isDir(v) then
-        if v == "rom" then
-            peclib.prite(ax,ay,"rom",colors.red,colors.black)
-            ay = ay + 1
-        end
-        if v ~= "rom" then
-            peclib.prite(ax,ay,v,colors.red,colors.black)
-            ay = ay + 1
-        end
+      term.setTextColor(colors.red)
+      writeSize = false
+    elseif fs.isReadOnly(v) then
+      term.setTextColor(colors.orange)
+    elseif fs.isDir(v) then -- Can't be read only.
+      term.setTextColor(colors.yellow)
+      writeSize = false
     end
-    if fs.isReadOnly(v) then
-        if v ~= "rom" then
-            peclib.prite(ax,ay,v..string.rep(" ", sizex-#v)..kbsize.."KB",colors.orange,colors.black)
-            ay = ay + 1
-        end
-    end
-    if fs.isDir(v) then
-        if v ~= "rom" then
-            peclib.prite(ax,ay,v,colors.yellow,colors.black)
-            ay = ay + 1
-        end
-    end
+
     if ext == "lua" then
-        peclib.prite(ax,ay,v..string.rep(" ", sizex-#v)..kbsize.."KB",colors.blue,colors.black)
-        ay = ay + 1
+      term.setTextColor(colors.blue)
+    elseif ext ~= v then
+      term.setTextColor(colors.white)
     end
-    if ext ~= "lua" and fs.isDir(v) ~= true and fs.isReadOnly(v) ~= true then
-        peclib.prite(ax,ay,v..string.rep(" ", sizex-#v)..kbsize.."KB",colors.white,colors.black)
-        ay = ay + 1
+    if writeSize then
+      print(v..string.rep(" ", sizex-#v)..kbsize.."KB")
+    else
+      print(v)
     end
+    term.setTextColor(colors.white)
 end
-print()
