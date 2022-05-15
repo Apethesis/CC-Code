@@ -1,7 +1,14 @@
 -- It stands for "Shitty LiSt"
 
--- No more peclib.
--- Cry about it.
+-- Peclib :face_vomiting: 
+if not fs.exists("./peclib.lua") then
+    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
+    local htf = fs.open("./peclib.lua","w")
+    htf.write(htg.readAll())
+    htf.close()
+    htg.close()
+end
+local peclib = require("peclib")
 
 -- Making the file table
 local fll = fs.list("/"..shell.dir())
@@ -29,6 +36,7 @@ end
 
 -- Printing it out
 local cx,cy = term.getCursorPos()
+local writeSize, h = term.getSize()
 local ax = 1
 local ay = cy
 for k,v in pairs(ftbl) do
@@ -36,25 +44,29 @@ for k,v in pairs(ftbl) do
     local filesize = fs.getSize(v)
     local kbsize = string.sub(tostring(filesize / 1024), 1, 4)
     local writeSize = true
+    local color = colors.white
     if fs.isReadOnly(v) and fs.isDir(v) then
-      term.setTextColor(colors.red)
+      color = colors.red
       writeSize = false
     elseif fs.isReadOnly(v) then
-      term.setTextColor(colors.orange)
+      color = colors.orange
     elseif fs.isDir(v) then -- Can't be read only.
-      term.setTextColor(colors.yellow)
-      writeSize = false
+      color = colors.yellow
     end
 
     if ext == "lua" then
-      term.setTextColor(colors.blue)
-    elseif ext ~= v then
-      term.setTextColor(colors.white)
+      color = colors.blue
+    end
+    if ay == h then
+      term.scroll(1)
+      ay = ay - 1
     end
     if writeSize then
-      print(v..string.rep(" ", sizex-#v)..kbsize.."KB")
+      peclib.prite(ax, ay, v..(" "):rep(sizex-#v)..kbsize.."KB", color, colors.black)
     else
-      print(v)
+      peclib.prite(ax, ay, v, color, colors.black)
     end
-    term.setTextColor(colors.white)
-end
+    ay = ay+1
+  end
+
+  print()
