@@ -30,7 +30,7 @@ if args[1] == "get" and args[2] ~= nil and args[3] ~= nil then
     local res = http.get("https://devbin.dev/raw/"..args[2])
     if type(res) ~= "table" then
         error(res,0)
-    end
+    end 
     local re = res.readAll()
     local fi = fs.open(args[3],"w")
     fi.write(re)
@@ -38,7 +38,7 @@ if args[1] == "get" and args[2] ~= nil and args[3] ~= nil then
     res.close()
 elseif args[1] == "put" and args[2] ~= nil then
     local fi = fs.open("./"..args[2],"r")
-    http.post("https://devbin.dev/api/v2/paste",textutils.serialiseJSON({
+    local res = http.post("https://devbin.dev/api/v2/paste",textutils.serialiseJSON({
         ["title"] = "DBin Upload",
         ["syntax"] = "lua",
         ["content"] = fi.readAll(),
@@ -46,6 +46,10 @@ elseif args[1] == "put" and args[2] ~= nil then
         ["asGuest"] = false
     }),{ ["Authorization"] = "AdJ0-0sdhg3RoatrIPXuQ8a13GZX-5Onx23pDUSHokriLZEp", ["Content-Type"] = "application/json" })
     fi.close()
+    local pres = textutils.unserialiseJSON(res.readAll())
+    res.close()
+    print("Upload successful, code is "..pres.code)
+    print("To download the file do: dbin get "..pres.code.." <filename>")
 else
     hlp()
 end
