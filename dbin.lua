@@ -38,7 +38,7 @@ if args[1] == "get" and args[2] ~= nil and args[3] ~= nil then
     local fi = fs.open(args[3],"w")
     fi.write(re)
     fi.close()
-    re.close()
+    res.close()
 elseif args[1] == "put" and args[2] ~= nil then
     local fi = fs.open("./"..args[2],"r")
     http.post("https://devbin.dev/api/v2/paste",textutils.serialiseJSON({
