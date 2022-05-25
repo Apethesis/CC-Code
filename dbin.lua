@@ -31,9 +31,6 @@ if args[1] == "get" and args[2] ~= nil and args[3] ~= nil then
     if type(res) ~= "table" then
         error(res,0)
     end
-    if args[3]:match("[^%.]+$") == nil or "" then
-        args[3] = args[3]..".lua"
-    end
     local re = res.readAll()
     local fi = fs.open(args[3],"w")
     fi.write(re)
