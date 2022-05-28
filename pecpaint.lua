@@ -1,4 +1,5 @@
-local ver = 4.12
+local wver = 4.12
+local ver = "4.1.2"
 local args = {...}
 local svfl = "./save.cimg"
 if args[1] ~= nil then
@@ -7,7 +8,14 @@ if args[1] ~= nil then
     end
     svfl = args[1]
 end
-
+if not fs.exists("./peclib.lua") then
+    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
+    local htf = fs.open("./peclib.lua","w")
+    htf.write(htg.readAll())
+    htf.close()
+    htg.close()
+end
+local peclib = require "peclib"
 local btable = {
     [1] = colors.white,
     [2] = colors.orange,
@@ -26,26 +34,19 @@ local btable = {
     [15] = colors.red,
     [16] = colors.black
 }
-
-local blitTable = {}
-local chars = "0123456789abcdef"
-for i=0,15 do
-    blitTable[2^i] = chars:sub(i+1,i+1)
-end
-
-local function toBlit(color)
-    return blitTable[color]
-end
-
 local tx,ty = term.getSize()
 print("This program is still in beta, and isn't stable.")
 print("Do you wish to continue? (yes/no)")
 local beta = read()
 local guiHidden = false
-
-require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecpaint.lua", ver)
-
-if beta:sub(1,1):lower() == "n" then
+if http.get("https://github.com/Apethesis/CC-Code/raw/main/pecpaint.lua").readAll() ~= fs.open("pecpaint.lua","r").readAll() then
+    print("There is a new version of this program available, do you wish to update? (yes/no)")
+    local update = string.lower(read())
+    if update == "yes" then
+        peclib.update("https://github.com/Apethesis/CC-Code/raw/main/pecpaint.lua",wver)
+    end
+end
+if beta == "no" then
     os.queueEvent("terminate")
 end
 term.clear()
@@ -58,37 +59,37 @@ if fs.exists(svfl) then
     term.clear()
     for x,_temp in pairs(map) do
         for y,data in pairs(_temp) do
-            term.setCursorPos(x, y)
-            term.blit(" ", toBlit(colors.white), data)
+            peclib.prite(x,y," ",peclib.toBlit(colors.white),data)
         end
     end
 end
-local colr = "0"
+local colr = colors.white
 for i = 1,16 do
-    term.setCursorPos(i, 1)
-    term.blit(" ", toBlit(colors.white), toBlit(btable[i]) or "f")
+    peclib.prite(i,1," ",peclib.toBlit(colors.white),peclib.toBlit(btable[i]))
 end
 local function clrbutton(_,_,x,y)
     if btable[x] and y == 1 and guiHidden == false then
-        colr = toBlit(btable[x])
+        colr = peclib.toBlit(btable[x])
     end
+    local ax = tx - 17
+    peclib.prite(ax,ty,"Changed color to "..colr)
 end
 local function draw(_,button,x,y)
     if button == 1 and guiHidden == false then
         if y > 1 then
-            term.setCursorPos(x, y)
-            term.blit(" ", toBlit(colors.white), colr)
+            peclib.prite(x,y," ",peclib.toBlit(colors.white),colr)
             map[x] = map[x] or {}
             map[x][y] = colr
             local ax = tx - 17
+            peclib.prite(ax,ty,"Drew at x"..x.." y"..y.."        ")
         end
     elseif button == 2 and guiHidden == false then
         if y > 1 then
-            term.setCursorPos(x, y)
-            term.blit(" ", "0", "f")
+            peclib.prite(x,y," ")
             map[x] = map[x] or {}
-            map[x][y] = toBlit(colors.black)
+            map[x][y] = peclib.toBlit(colors.black)
             local ax = tx - 17
+            peclib.prite(ax,ty,"Erased x"..x.." y"..y.."        ")
         end
     end
 end
@@ -101,10 +102,8 @@ end
 local function savecheck(_,key,_)
     if key == keys.s and guiHidden == false then
         save()
-        local str = (" "):rep(10).."Saved" -- clear just in case
-        local ax = tx - #str
-        term.setCursorPos(ax, ty)
-        term.blit(str, ("0"):rep(#str), (colr):rep(#str))
+        local ax = tx - 17
+        peclib.prite(ax,ty,"Saved                      ")
     end
 end
 local function clearmap(_,key,_)
@@ -112,16 +111,12 @@ local function clearmap(_,key,_)
         map = {}
         
         term.clear()
-        term.setCursorPos(1,1)
         for i = 1,16 do
-            term.blit(" ", toBlit(colors.white), toBlit(btable[i]))
+            peclib.prite(i,1," ",peclib.toBlit(colors.white),peclib.toBlit(btable[i]))
         end
-        local str = (" "):rep(10).."Cleared" -- clear just in case
-        local ax = tx - #str
-        term.setCursorPos(ax, ty)
-        write(str)
-        term.setCursorPos(tx-14, 1)
-        print(string.format("PecPaint v%s", ver))
+        local ax = tx - 17
+        peclib.prite(ax,ty,"Cleared                      ")
+        peclib.prite(tx-14,1,"PecPaint v"..ver)
         save()
     end
 end
@@ -131,8 +126,7 @@ local function fillBackground(_,key,_)
             for b = 2,ty do
                 map[a] = map[a] or {}
                 map[a][b] = colr
-                term.setCursorPos(a, b)
-                term.blit(" ", toBlit(colors.white), colr)
+                peclib.prite(a,b," ",peclib.toBlit(colors.white),colr)
             end
         end
     end
@@ -143,24 +137,20 @@ local function hideGui(_,key,_)
         term.clear()
         for x,_temp in pairs(map) do
             for y,data in pairs(_temp) do
-                term.setCursorPos(x, y)
-                term.blit(" ", toBlit(colors.white), data)
+                peclib.prite(x,y," ",peclib.toBlit(colors.white),data)
             end
         end
         guiHidden = true
     end
     if key == keys.h and guiHidden == true then
-        term.setCursorPos(tx-14, 1)
-        write("PecPaint v"..ver)
+        peclib.prite(tx-14,1,"PecPaint v"..ver)
         for i = 1,16 do
-            term.setCursorPos(i, 1)
-            term.blit(" ", toBlit(colors.white), toBlit(btable[i]))
+            peclib.prite(i,1," ",peclib.toBlit(colors.white),peclib.toBlit(btable[i]))
         end
         guiHidden = false
     end
 end
-term.setCursorPos(tx-14, 1)
-write("PecPaint v"..ver)
+peclib.prite(tx-14,1,"PecPaint v"..ver)
 while true do
 	local event = table.pack(os.pullEventRaw())
     if event[1] == "mouse_click" then
@@ -172,7 +162,7 @@ while true do
         save() 
         term.clear()
         term.setCursorPos(1, 1)
-        break
+        error("", 0)
     elseif event[1] == "key" then
         clearmap(table.unpack(event))
         hideGui(table.unpack(event))
