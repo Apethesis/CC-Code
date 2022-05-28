@@ -1,7 +1,7 @@
 local ver = 1.0
 -- 1.0 because peclib-less lmao
 
-require("updater")("https://raw.githubusercontent.com/TotallyNotVirtIO/Peclib-less-Compec-Code/main/pecchat.lua", ver)
+require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecchat.lua", ver)
 
 local modem = peripheral.find("modem") or error("No modem attached","0")
 if modem.isOpen(4557) == false then

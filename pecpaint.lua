@@ -43,7 +43,7 @@ print("Do you wish to continue? (yes/no)")
 local beta = read()
 local guiHidden = false
 
-require("updater")("https://raw.githubusercontent.com/TotallyNotVirtIO/Peclib-less-Compec-Code/main/pecpaint.lua", ver)
+require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecpaint.lua", ver)
 
 if beta:sub(1,1):lower() == "n" then
     os.queueEvent("terminate")

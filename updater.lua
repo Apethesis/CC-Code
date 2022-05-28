@@ -1,10 +1,12 @@
 
 local function update(link, ver)
-    local req, err = http.request(link)
+    local req, err = http.get(link)
     assert(req, err)
 
     local txt = req.readAll()
-    local GHVer = tonumber(txt:match("%d%.%d$"))
+    local GHVerS = txt:match("%d%.%d")
+    print(GHVerS)
+    local GHVer = tonumber(GHVerS)
     if GHVer > ver then
         local f = fs.open(shell.getRunningProgram(), "w")
         f.write(txt)

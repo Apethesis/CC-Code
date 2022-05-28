@@ -1,7 +1,7 @@
 local ver = 1.2
-local request = http.get("https://raw.githubusercontent.com/TotallyNotVirtIO/Peclib-less-Compec-Code/main/pecquarry.lua")
+local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecquarry.lua")
 
-require("updater")("https://raw.githubusercontent.com/TotallyNotVirtIO/Peclib-less-Compec-Code/main/pecquarry.lua", ver)
+require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecquarry.lua", ver)
 
 local modem = peripheral.find("modem") or error("No modem attached","0")
 local keytable = {
