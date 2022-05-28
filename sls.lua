@@ -1,3 +1,7 @@
+local ver = 1.0
+
+require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/sls.lua", ver)
+
 -- It stands for "Shitty LiSt"
 
 -- Making the file table
