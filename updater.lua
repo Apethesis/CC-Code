@@ -1,6 +1,6 @@
 
 local function update(link, ver)
-    --[[local req, err = http.request(link)
+    local req, err = http.request(link)
     assert(req, err)
 
     local txt = req.readAll()
@@ -8,7 +8,7 @@ local function update(link, ver)
     if GHVer > ver then
         local f = fs.open(shell.getRunningProgram(), "w")
         f.write(txt)
-    end--]]
+    end
 end
 
 return update
