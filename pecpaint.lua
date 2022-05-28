@@ -101,9 +101,10 @@ end
 local function savecheck(_,key,_)
     if key == keys.s and guiHidden == false then
         save()
-        local ax = tx - 17
+        local str = (" "):rep(10).."Saved" -- clear just in case
+        local ax = tx - #str
         term.setCursorPos(ax, ty)
-        write("Saved" .. (" "):rep(22))
+        term.blit(str, ("0"):rep(#str), (colr):rep(#str))
     end
 end
 local function clearmap(_,key,_)
@@ -115,9 +116,10 @@ local function clearmap(_,key,_)
         for i = 1,16 do
             term.blit(" ", toBlit(colors.white), toBlit(btable[i]))
         end
-        local ax = tx - 17
-        term.setCursorPos(ax,ty)
-        write("Cleared" .. (" "):rep(22))
+        local str = (" "):rep(10).."Cleared" -- clear just in case
+        local ax = tx - #str
+        term.setCursorPos(ax, ty)
+        write(str)
         term.setCursorPos(tx-14, 1)
         print(string.format("PecPaint v%s", ver))
         save()
@@ -170,7 +172,7 @@ while true do
         save() 
         term.clear()
         term.setCursorPos(1, 1)
-        error("", 0)
+        break
     elseif event[1] == "key" then
         clearmap(table.unpack(event))
         hideGui(table.unpack(event))
