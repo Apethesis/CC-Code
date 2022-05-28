@@ -4,8 +4,6 @@ require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/sls
 
 -- It stands for "Shitty LiSt"
 
--- bruh git please sign my commit
-
 -- Making the file table
 local fll = fs.list("/"..shell.dir())
 local ftbl = {}
