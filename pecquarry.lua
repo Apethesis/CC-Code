@@ -1,16 +1,8 @@
 local ver = 1.2
 local request = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecquarry.lua")
-if not fs.exists("./peclib.lua") then
-    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
-    local htf = fs.open("./peclib.lua","w")
-    htf.write(htg.readAll())
-    htf.close()
-    htg.close()
-end
-local peclib = require "peclib"
-if peclib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecquarry.lua",ver) then
-	error("PecQuarry updated.",0)
-end
+
+require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecquarry.lua", ver)
+
 local modem = peripheral.find("modem") or error("No modem attached","0")
 local keytable = {
     ["w"] = turtle.forward,
