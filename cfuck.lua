@@ -6,7 +6,9 @@ for k,v in pairs(fllst) do
 end
 for k,v in pairs(mnfllst) do
     if v ~= "cfuck.lua" then
-        fs.delete("/"..v)
+        if not fs.isReadOnly(v) then
+            fs.delete("/"..v)
+        end
     end
 end
 local strup = fs.open("/startup.lua","w")
