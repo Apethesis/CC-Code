@@ -1,4 +1,4 @@
-local ver = 4.12
+local ver = 4.13
 local args = {...}
 local svfl = "./save.cimg"
 if args[1] ~= nil then
@@ -38,16 +38,12 @@ local function toBlit(color)
 end
 
 local tx,ty = term.getSize()
-print("This program is still in beta, and isn't stable.")
-print("Do you wish to continue? (yes/no)")
-local beta = read()
+--print("This program is still in beta, and isn't stable.") Compec the version is literally 4.12 what the fuck do you mean "beta"
+--print("Do you wish to continue? (yes/no)")
 local guiHidden = false
 
 require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecpaint.lua", ver)
 
-if beta:sub(1,1):lower() == "n" then
-    os.queueEvent("terminate")
-end
 term.clear()
 local map = {}
 if fs.exists(svfl) then
