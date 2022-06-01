@@ -1,3 +1,5 @@
+error("Compec end my suffering and stop using peclib.")
+
 local peclib = {}
 local expect = require("cc.expect")
 local color_hex_lookup = {

@@ -1,5 +1,5 @@
 local args = {...}
-local peclib = require("peclib")
+local toBlit = require("toBlit"); -- There's a semicolon here now. Suffer.
 args[1] = args[1] or "./save.cimg"
 args[2] = args[2] or "./save.cimg2"
 args[3] = args[3] or "cimg"
@@ -24,11 +24,15 @@ local function getIMGSize(array)
 end
 if args[3] == "cimg" and args[4] == "cimg2" then
     local winder = window.create(term.current(),1,1,term.current().getSize())
+    local curTerm = term.current()
+    term.redirect(winder)
     for x,_temp in pairs(map) do
         for y,data in pairs(_temp) do
-            peclib.prite(x,y," ",peclib.toBlit(colors.white),data,winder)
+	    term.setCursorPos(x, y)
+	    term.blit(" ", "0" --[[Compec you dementia having ass colors.white is 0]], data)
         end
     end
+    term.redirect(curTerm)
     for i=1,ty do
         local _,_,data = winder.getLine(i)
         smap[i] = data
@@ -36,7 +40,8 @@ if args[3] == "cimg" and args[4] == "cimg2" then
 elseif args[3] == "cimg" and args[4] == "nimg" then
     for x,_temp in pairs(map) do
         for y,data in pairs(_temp) do
-            peclib.prite(x,y," ",peclib.toBlit(colors.white),data,winder)
+	        term.setCursorPos(x, y)
+            term.blit(" ", "0", data)
         end
     end
     smap["offset"] = {5, 13, 11, 4}
