@@ -1,8 +1,15 @@
-local ver = 1.0
--- 1.0 because peclib-less lmao
-
-require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecchat.lua", ver)
-
+local ver = 1.6
+if not fs.exists("./peclib.lua") then
+    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
+    local htf = fs.open("./peclib.lua","w")
+    htf.write(htg.readAll())
+    htf.close()
+    htg.close()
+end
+local peclib = require "peclib"
+if peclib.update("https://raw.githubusercontent.com/Apethesis/CC-Code/main/pecchat.lua",ver) then
+	error("PecChat updated.",0)
+end
 local modem = peripheral.find("modem") or error("No modem attached","0")
 if modem.isOpen(4557) == false then
     modem.open(4557)
