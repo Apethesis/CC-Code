@@ -1,14 +1,8 @@
--- It stands for "Shitty LiSt"
+local ver = 1.0
 
--- Peclib :face_vomiting: 
-if not fs.exists("./peclib.lua") then
-    local htg = http.get("https://raw.githubusercontent.com/Apethesis/CC-Code/main/peclib.lua")
-    local htf = fs.open("./peclib.lua","w")
-    htf.write(htg.readAll())
-    htf.close()
-    htg.close()
-end
-local peclib = require("peclib")
+require("updater")("https://raw.githubusercontent.com/Apethesis/CC-Code/main/sls.lua", ver)
+
+-- It stands for "Shitty LiSt"
 
 -- Making the file table
 local fll = fs.list("/"..shell.dir())
@@ -35,10 +29,6 @@ for i, v in ipairs(ftbl) do
 end
 
 -- Printing it out
-local cx,cy = term.getCursorPos()
-local writeSize, h = term.getSize()
-local ax = 1
-local ay = cy
 for k,v in pairs(ftbl) do
     local ext = v:match("[^%.]+$")
     local filesize = fs.getSize(v)
@@ -57,16 +47,11 @@ for k,v in pairs(ftbl) do
     if ext == "lua" then
       color = colors.blue
     end
-    if ay == h then
-      term.scroll(1)
-      ay = ay - 1
-    end
+    term.setTextColor(color)
     if writeSize then
-      peclib.prite(ax, ay, v..(" "):rep(sizex-#v)..kbsize.."KB", color, colors.black)
+      print(v..(" "):rep(sizex-#v)..kbsize.."KB")
     else
-      peclib.prite(ax, ay, v, color, colors.black)
+      print(v)
     end
-    ay = ay+1
   end
-
-  print()
+term.setTextColor(colors.white)
