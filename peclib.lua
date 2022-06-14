@@ -1,3 +1,5 @@
+--- The main table of functions
+-- @module peclib
 local peclib = {}
 local expect = require("cc.expect")
 local color_hex_lookup = {
@@ -19,12 +21,54 @@ local color_hex_lookup = {
     [colors.black] = "f"
 }
 
-function peclib.toBlit(color) -- peclib.toBlit(a colors value)
+--- Converts a "colors" value into a blit value
+-- @param color "colors" value (number)
+-- @return blit value (string)
+-- @usage local peclib = require("peclib")
+function peclib.toBlit(color)
     expect(1, color, "number")
-    return color_hex_lookup[color] or
-        string.format("%x", math.floor(math.log(color) / math.log(2)))
+    return color_hex_lookup[color] or string.format("%x", math.floor(math.log(color) / math.log(2)))
 end
 
+--- My custom read function
+-- @return text that was inputted (string)
+function peclib.read()
+    local numtbl = {
+        ["zero"] = "0",
+        ["one"] = "1",
+        ["two"] = "2",
+        ["three"] = "3",
+        ["four"] = "4",
+        ["five"] = "5",
+        ["six"] = "6",
+        ["seven"] = "7",
+        ["eight"] = "8",
+        ["nine"] = "9",
+        ["space"] = " "
+    }
+    local entr = false
+    local stre = ""
+    while not entr do
+        local evnt = table.pack(os.pullEvent("key"))
+        local chr = keys.getName(evnt[2])
+        if numtbl[chr] then
+            chr = numtbl[chr]
+        end
+        if evnt[2] == keys.enter then
+            entr = true
+        else    
+            stre = stre..chr
+        end
+    end
+    return stre
+end
+
+--- prite (PrintWrites) to a specific location on the screen
+-- @param x x value (number)
+-- @param y y value (number)
+-- @param text text to be written (string)
+-- @param tcolor colors or blit value to be used as text color
+-- @param bcolor colors or blit value to be used as background color
 function peclib.prite(x, y, text, tcolor, bcolor) -- peclib.prite(x,y,text,text color,background color)
     x = x or 0
     y = y or 0
@@ -35,9 +79,12 @@ function peclib.prite(x, y, text, tcolor, bcolor) -- peclib.prite(x,y,text,text 
     bcolor = type(bcolor) == "number" and peclib.toBlit(bcolor) or bcolor
     term.setCursorPos(x, y)
     term.blit(text, tcolor:rep(#text), bcolor:rep(#text))
-end -- this is prite
+end
 
-function peclib.update(link, ver) -- peclib.update(a link to the raw file, and your version variable. must be a number)
+--- update. compares 2 numbers and if the one from the link is higher it updates the program
+-- @param link link to the raw text version of your program
+-- @param ver version of the program, must be a number or float
+function peclib.update(link, ver)
     local request = http.get(link)
     if request ~= nil then
         local txt = request.readAll()
@@ -53,6 +100,9 @@ function peclib.update(link, ver) -- peclib.update(a link to the raw file, and y
     return false
 end
 
+--- basically shell.run("wget link") in library form
+-- @param link raw link to the text version of your program
+-- @param filename path or filename to the file
 function peclib.wget(link,filename)
     local request = http.get(link)
     if request ~= nil then
