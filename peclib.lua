@@ -33,31 +33,16 @@ end
 --- My custom read function
 -- @return text that was inputted (string)
 function peclib.read()
-    local numtbl = {
-        ["zero"] = "0",
-        ["one"] = "1",
-        ["two"] = "2",
-        ["three"] = "3",
-        ["four"] = "4",
-        ["five"] = "5",
-        ["six"] = "6",
-        ["seven"] = "7",
-        ["eight"] = "8",
-        ["nine"] = "9",
-        ["space"] = " "
-    }
     local entr = false
     local stre = ""
     while not entr do
-        local evnt = table.pack(os.pullEvent("key"))
-        local chr = keys.getName(evnt[2])
-        if numtbl[chr] then
-            chr = numtbl[chr]
-        end
-        if evnt[2] == keys.enter then
+        local evnt = table.pack(os.pullEvent())
+        if evnt[2] == keys.enter and evnt[1] == "key" then
             entr = true
-        else    
-            stre = stre..chr
+        elseif evnt[1] == "char" then
+            stre = stre..evnt[2]
+        elseif evnt[1] == "key" and evnt[2] == keys.backspace then
+            stre = stre:sub(1,-2)
         end
     end
     return stre
