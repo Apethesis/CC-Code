@@ -11,6 +11,7 @@ canvas:draw("hiButton")
 local function hello()
     while true do
         print("hello worldie")
+        canvas:draw("hiButton")
         sleep(3)
     end
 end
