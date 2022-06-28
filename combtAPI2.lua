@@ -1,4 +1,3 @@
--- Credit to 9551Dev for writeCentered, to_blit and mbIsWithin
 local api = {}
 local functable = {
     ["data"] = {}
@@ -27,13 +26,14 @@ end
 -- The start of all, api.create()
 function api.create(terme)
     functable.term = terme or term.current()
-    return functable
+    return setmetatable({ data = {} },{__index = functable})
 end
 
 -- Basic modification and creation functions
 function functable:make(mntl)
     if type(mntl.color) == "number" then mntl.color = to_blit(mntl.color) end
     if type(mntl.textColor) == "number" then mntl.textColor = to_blit(mntl.textColor) end
+    if not mntl.visible then mntl.visible = true end
     self.data[mntl.name] = mntl
 end
 
@@ -50,6 +50,7 @@ end
 -- Drawing n' stuff
 function functable:draw(name)
     local tbl = self.data[name]
+    if not tbl.visible then return end
     for i=tbl.y,tbl.y+tbl.height-1 do
         prite(tbl.x,i,(" "):rep(tbl.width),tbl.textColor,tbl.color)
     end
@@ -57,11 +58,15 @@ function functable:draw(name)
 end
 
 function functable:execute(func)
+    func = func or function()
+        os.epoch()
+        sleep(5)
+    end
     local function checkin()
         while true do
             local event = {os.pullEvent("mouse_click")}
             for k,v in pairs(self.data) do
-                if mbIsWithin(event[3],event[4],v.x,v.y,v.width,v.height) then
+                if mbIsWithin(event[3],event[4],v.x,v.y,v.width,v.height) and v.visible then
                     v.on_click()
                 end
             end
