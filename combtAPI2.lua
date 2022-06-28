@@ -1,7 +1,5 @@
 local api = {}
-local functable = {
-    ["data"] = {}
-}
+local functable = {}
 
 -- Just defining some useful functions
 local function to_blit(c)
