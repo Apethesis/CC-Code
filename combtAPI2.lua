@@ -1,3 +1,4 @@
+-- Credit to 9551Dev for writeCentered, to_blit and mbIsWithin
 local api = {}
 local functable = {
     ["data"] = {}
