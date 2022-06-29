@@ -5,5 +5,7 @@ local base = require("main")
 package.path = oldpath
 
 return function(filein,fileout)
-    -- conversion code here
+    -- both filein and fileout will be file handles
+    -- make sure to close them when you're done
+    -- anyway conversion code here
 end
