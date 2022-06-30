@@ -5,7 +5,7 @@ local base = require("main")
 package.path = oldpath
 
 return function(filein)
-    local tbl1 = textutils.serialize(filein.readAll())
+    local tbl1 = textutils.unserialize(filein.readAll())
     local tbl2 = {}
     for x,_temp in pairs(tbl1) do
         for y,data in pairs(_temp) do
