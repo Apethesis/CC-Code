@@ -5,11 +5,6 @@ local base = require("main")
 package.path = oldpath
 
 return function(tbl, fileout)
-    -- fileout will be a file handle, make sure to close it when your done
-    -- tbl will just be a regular table with the data to be encoded
-    -- the function should take the table and write the correct format to the file
-    -- intermediate format is map[layer][y][x] = { background, foreground, text }
-    -- background and foreground are both blit values
     local tbl1 = {}
     for y,_temp in pairs(tbl[1]) do
         for x,data in pairs(_temp) do
