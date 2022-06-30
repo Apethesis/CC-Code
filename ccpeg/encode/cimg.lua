@@ -19,4 +19,5 @@ return function(tbl, fileout)
     end
     fileout.write(textutils.serialize(tbl1))
     fileout.close()
+    return true
 end

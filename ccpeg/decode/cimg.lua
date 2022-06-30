@@ -15,5 +15,5 @@ return function(filein)
         end
     end
     tbl1.close()
-    return tbl2
+    return true, tbl2
 end
