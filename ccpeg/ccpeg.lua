@@ -5,8 +5,10 @@ if args[1] == nil then
 else
     local filein = fs.open(args[1], "r")
     local fileout = fs.open(args[2], "w")
-    local type1 = assert(require("decode."..args[1]:match("[^%.]+$")), "input format not supported")
-    local type2 = assert(require("encode."..args[2]:match("[^%.]+$")), "output format not supported")
+    local ok1, type1 = assert(require("decode."..args[1]:match("[^%.]+$")), "input format not supported")
+    local ok2, type2 = assert(require("encode."..args[2]:match("[^%.]+$")), "output format not supported")
+---@diagnostic disable-next-line: need-check-nil
     local tbl = type1(filein)
+---@diagnostic disable-next-line: need-check-nil
     type2(tbl, fileout)
 end
