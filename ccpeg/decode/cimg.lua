@@ -1,9 +1,4 @@
-local path = "/"..string.sub(shell.dir(), 1, 14)
-local oldpath = package.path
-package.path = string.format("%s;/%s/?.lua;/%s/?/init.lua", package.path, path, path)
 local base = require("main")
-package.path = oldpath
-
 return function(filein)
     local tbl1 = textutils.unserialize(filein.readAll())
     local tbl2 = {}

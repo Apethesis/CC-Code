@@ -1,9 +1,4 @@
-local path = fs.getDir(select(2,...) or "")
-local oldpath = package.path
-package.path = string.format("%s;/%s/?.lua;/%s/?/init.lua", package.path, path, path)
 local base = require("main")
-package.path = oldpath
-
 return function(tbl, fileout)
     local tbl1 = {}
     for y,_temp in pairs(tbl[1]) do
