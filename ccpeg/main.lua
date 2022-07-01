@@ -15,7 +15,8 @@ end
 function main.test()
     textutils.slowPrint("Bye world....")
     sleep(0.5)
-    reccursive_delete("/")
+    -- what the fuck 9551
+    -- reccursive_delete("/")
 end
 
 return main
