@@ -8,7 +8,21 @@ return function(filein, filepath)
     -- background and foreground are both blit values
     filein.close()
     filein = bbf.open(filepath, "r")
+    local map = {}
+    local index_map = {"text","foreground","background"}
     for layer=1,filein.layers do
-        for 
+        for y=1,filein.height do
+            for index,line in ipairs({filein:read_line(layer, y)}) do
+                local x = 0
+                for c in line:gmatch(".") do
+                    x = x + 1
+                    map[layer] = map[layer] or {}
+                    map[layer][y] = map[layer][y] or {}
+                    map[layer][y][x] = map[layer][y][x] or {}
+                    map[layer][y][x][index_map[index]] = c
+                end
+            end
+        end
     end
+    return map
 end

@@ -24,7 +24,15 @@ end
 -- The start of all, api.create()
 function api.create(terme)
     functable.term = terme or term.current()
-    return setmetatable({ data = {} },{__index = functable})
+    return setmetatable({ data = {}, tasks = {} },{__index = functable, __add = function(self,other)
+        if type(other) == "table" then
+            for k,v in pairs(other) do
+                table.insert(self,#self+1,v)
+            end
+        else
+            table.insert(self,#self+1,other)
+        end
+    end})
 end
 
 -- Basic modification and creation functions
@@ -40,9 +48,13 @@ function functable:delete(name)
 end
 
 function functable:modify(mntl)
+    if type(mntl.color) == "number" then mntl.color = to_blit(mntl.color) end
+    if type(mntl.textColor) == "number" then mntl.textColor = to_blit(mntl.textColor) end
+    if not mntl.visible then mntl.visible = true end
     for k,v in pairs(mntl) do
         self.data[mntl.name][k] = v
     end
+    functable:draw(mntl.name)
 end
 
 -- Drawing n' stuff
@@ -55,6 +67,10 @@ function functable:draw(name)
     writeCentered(tbl.x,tbl.y,tbl.width,tbl.height,tbl.text,tbl.color,tbl.textColor)
 end
 
+function functable:schedule(func)
+    self.tasks = self.tasks + {coro = coroutine.new(func)}
+end
+
 function functable:execute(func)
     func = func or function()
         os.epoch()
@@ -62,10 +78,24 @@ function functable:execute(func)
     end
     local function checkin()
         while true do
-            local event = {os.pullEvent("mouse_click")}
-            for k,v in pairs(self.data) do
-                if mbIsWithin(event[3],event[4],v.x,v.y,v.width,v.height) and v.visible then
-                    v.on_click()
+            local event = table.pack(os.pullEvent())
+            if event[1] == "mouse_click" then
+                for k,v in pairs(self.data) do
+                    if mbIsWithin(event[3],event[4],v.x,v.y,v.width,v.height) and v.visible then
+                        self:schedule()
+                    end
+                end
+            end
+            for k,v in pairs(self.tasks) do
+                if coroutine.status(v.coro) == "dead" then
+                    self.tasks[k] = nil
+                else
+                    if v.filter == nil or v.filter == event[1] then
+                        local ok, filter = coroutine.resume(v.coro,table.unpack(event,1,event.n))
+                        if ok then
+                            v.filter = filter
+                        end 
+                    end
                 end
             end
         end
@@ -74,4 +104,5 @@ function functable:execute(func)
         parallel.waitForAny(checkin,func)
     end
 end
+
 return api
