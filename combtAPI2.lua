@@ -91,7 +91,7 @@ function functable:execute(func)
                     self.tasks[k] = nil
                 else
                     if v.filter == nil or v.filter == event[1] then
-                        local ok, filter = coroutine.resume(v.coro,table.unpack(event,1,event.n))
+                        local ok, filter = coroutine.resume(v.coro,table.unpack(event,1,event.n),self)
                         if ok then
                             v.filter = filter
                         end 
