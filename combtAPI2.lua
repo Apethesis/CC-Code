@@ -85,7 +85,7 @@ function functable:execute(func)
             if event[1] == "mouse_click" then
                 for k,v in pairs(self.data) do
                     if mbIsWithin(event[3],event[4],v.x,v.y,v.width,v.height) and v.visible then
-                        self:schedule(v.on_click)
+                        v.on_click(self)
                     end
                 end
             end
