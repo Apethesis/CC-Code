@@ -77,7 +77,7 @@ end
 function functable:execute(func)
     func = func or function()
         os.epoch()
-        sleep(5)
+        sleep(3)
     end
     local function checkin()
         while true do
@@ -85,7 +85,7 @@ function functable:execute(func)
             if event[1] == "mouse_click" then
                 for k,v in pairs(self.data) do
                     if mbIsWithin(event[3],event[4],v.x,v.y,v.width,v.height) and v.visible then
-                        self:schedule()
+                        self:schedule(v.on_click)
                     end
                 end
             end
