@@ -35,7 +35,7 @@ local function interpret(program,interpret_speed)
     local active_loop = false
     local loops = 0
     local cursor = 0
-    local bf_ops = program:gsub("[^%!%OwO%°w°%UwU%QwQ%@w@%>w<%~w~%¯w¯p]","")
+    local bf_ops = program:gsub("[^%!%/OwO/%/°w°/%/UwU/%/QwQ/%/@w@/%/>w</%/~w~/%/¯w¯/p]","")
     local i=1
     local pted = false
     local ign_newline = false
