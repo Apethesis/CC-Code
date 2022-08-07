@@ -27,7 +27,7 @@ local CPU = {
 }
 
 local MEM = {
-    ["MAX_MEM"] = 1024 * 64,
+    ["MAX_MEM"] = 1024 * 64, -- no idea why i have this here tbh, eh whatever it isnt causing trouble
     ["DATA"] = {}
 }
 
