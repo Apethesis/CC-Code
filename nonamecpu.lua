@@ -1,11 +1,12 @@
 -- My 8 bit (i think) CPU made to work with CC, but easily modifiable to work with regular lua most likely.
 -- Recommended to use 'lasm' instead of manually writing opcodes
-local MEM = {
-    SP = 0
-}
+local MEM = setmetatable({ SP = 0 }, { __index = 0 })
 local CPU = {
     PC = 0x01,
-    IR = 0,
+    IR = {
+        A = 0,
+        B = 0
+    },
     INST = {
         ["INS_AND"] = 0x01,
         ["INS_OR"] = 0x02,
@@ -25,11 +26,29 @@ local CPU = {
         ["INS_JMP"] = 0x10,
         ["INS_TRM_SCP"] = 0x11,
         ["INS_TRM_SBC"] = 0x12,
-        ["INS_TRM_SFC"] = 0x13,
+        ["INS_TRM_STC"] = 0x13,
         ["INS_TRM_WRT"] = 0x14,
         ["INS_TRM_CLR"] = 0x15,
         ["INS_PAUSE"] = 0x16,
         ["INST_OUTIR"] = 0x17
+    },
+    ["TRM_COLR"] = {
+        [0x00] = colors.white,
+        [0x01] = colors.orange,
+        [0x02] = colors.magenta,
+        [0x03] = colors.lightBlue,
+        [0x04] = colors.yellow,
+        [0x05] = colors.lime,
+        [0x06] = colors.pink,
+        [0x07] = colors.gray,
+        [0x08] = colors.lightGray,
+        [0x09] = colors.cyan,
+        [0x0A] = colors.purple,
+        [0x0B] = colors.blue,
+        [0x0C] = colors.brown,
+        [0x0D] = colors.green,
+        [0x0E] = colors.red,
+        [0x0F] = colors.black
     }
 }
 for i=1,256 do
@@ -37,10 +56,12 @@ for i=1,256 do
 end
 local args = {...}
 args[1] = args[1] or "/save"
+local logfile = fs.open("/.log","w")
+local log = ""
 local PC = 0x01
 function CPU.fetchbyte(mem)
     local dat = mem[CPU.PC]
-    CPU.PC = CPU.PC + 1
+    CPU.PC = (CPU.PC + 1) % 256
     return dat
 end
 function CPU.readbyte(mem)
@@ -48,37 +69,37 @@ function CPU.readbyte(mem)
     PC = PC + 1
     return dat
 end
-local function exec(mem)
+local function exec(meem)
     local warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong = false
     local ftbl = {
         [0x01] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            local dt2 = CPU.fetchbyte(mem)
-            CPU.IR = bit32.band(dt1, dt2)
+            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt2 = CPU.fetchbyte(mem) or 0
+            CPU.IR.A = bit32.band(dt1, dt2)
         end,
         [0x02] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            local dt2 = CPU.fetchbyte(mem)
-            CPU.IR = bit32.bor(dt1, dt2)
+            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt2 = CPU.fetchbyte(mem) or 0
+            CPU.IR.A = bit32.bor(dt1, dt2)
         end,
         [0x03] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            local dt2 = CPU.fetchbyte(mem)
-            CPU.IR = bit32.band(bit32.bnot(dt1), bit32.bnot(dt2))
+            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt2 = CPU.fetchbyte(mem) or 0
+            CPU.IR.A = bit32.band(bit32.bnot(dt1), bit32.bnot(dt2))
         end,
         [0x04] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            local dt2 = CPU.fetchbyte(mem)
-            CPU.IR = bit32.bor(bit32.bnot(dt1), bit32.bnot(dt2))
+            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt2 = CPU.fetchbyte(mem) or 0
+            CPU.IR.A = bit32.bor(bit32.bnot(dt1), bit32.bnot(dt2))
         end,
         [0x05] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            local dt2 = CPU.fetchbyte(mem)
-            CPU.IR = bit32.bxor(dt1, dt2)
+            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt2 = CPU.fetchbyte(mem) or 0
+            CPU.IR.A = bit32.bxor(dt1, dt2)
         end,
         [0x06] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            CPU.IR = bit32.bnot(dt1)
+            local dt1 = CPU.fetchbyte(mem) or 0
+            CPU.IR.A = bit32.bnot(dt1)
         end,
         [0x07] = function()
             warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong = true
@@ -90,74 +111,95 @@ local function exec(mem)
             fl.close()
         end,
         [0x09] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            local dt2 = CPU.fetchbyte(mem)
+            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt2 = CPU.fetchbyte(mem) or 0
             mem[dt2] = dt1
         end,
         [0x0A] = function(mem)
-            local dt = CPU.fetchbyte(mem)
-            CPU.IR = dt
+            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt2 = CPU.fetchbyte(mem) or 0
+            if dt1 == 0x01 then
+                CPU.IR.A = dt2
+            elseif dt1 == 0x02 then
+                CPU.IR.B = dt2
+            end
         end,
         [0x0B] = function(mem)
-            local dt = CPU.fetchbyte(mem)
-            mem[dt] = CPU.IR
+            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt2 = CPU.fetchbyte(mem) or 0
+            if dt1 == 0x01 then
+                mem[dt2] = CPU.IR.A
+            elseif dt1 == 0x02 then
+                mem[dt2] = CPU.IR.B
+            end
         end,
         [0x0C] = function(mem)
-            local a = CPU.fetchbyte(mem)
-            local b = CPU.fetchbyte(mem)
-            CPU.IR = (a + b) % 256
+            local a = CPU.fetchbyte(mem) or 0
+            local b = CPU.fetchbyte(mem) or 0
+            CPU.IR.B = (a + b) % 256
         end,
         [0x0D] = function(mem)
-            local a = CPU.fetchbyte(mem)
-            local b = CPU.fetchbyte(mem)
-            CPU.IR = a - b; if CPU.IR < 0 then CPU.IR = CPU.IR + 256 end
+            local a = CPU.fetchbyte(mem) or 0
+            local b = CPU.fetchbyte(mem) or 0
+            CPU.IR.B = a - b; if CPU.IR.B < 0 then CPU.IR.B = CPU.IR.B + 256 end
         end,
         [0x0E] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
+            local dt1 = CPU.fetchbyte(mem) or 0
             print(dt1)
         end,
         [0x0F] = function(mem)
-            local dt1 = CPU.fetchbyte(mem) 
+            local dt1 = CPU.fetchbyte(mem)  or 0
             print(keys.getName(dt1))
         end,
         [0x10] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
+            local dt1 = CPU.fetchbyte(mem) or 0
             CPU.PC = dt1
         end,
         [0x11] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            local dt2 = CPU.fetchbyte(mem)
+            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt2 = CPU.fetchbyte(mem) or 0
             term.setCursorPos(dt1,dt2)
         end,
         [0x12] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            term.setBackgroundColor(dt1)
+            local dt1 = CPU.fetchbyte(mem) or 0
+            term.setBackgroundColor(CPU.TRM_COLR[dt1])
         end,
         [0x13] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
-            term.setTextColor(dt1)
+            local dt1 = CPU.fetchbyte(mem) or 0
+            term.setTextColor(CPU.TRM_COLR[dt1])
         end,
         [0x14] = function(mem)
-            local dt1 = CPU.fetchbyte(mem)
+            local dt1 = CPU.fetchbyte(mem) or 0
             term.write(dt1)
         end,
         [0x15] = function()
             term.clear()
         end,
         [0x16] = function(mem)
-            local tm = CPU.fetchbyte(mem)
+            local tm = CPU.fetchbyte(mem) or 0
             sleep(tm)
         end,
-        [0x17] = function()
-            print(tostring(CPU.IR))
+        [0x17] = function(mem)
+            local dt1 = CPU.fetchbyte(mem) or 0
+            if dt1 == 0x01 then
+                print(tostring(CPU.IR.A))
+            elseif dt1 == 0x02 then
+                print(tostring(CPU.IR.B))
+            end
         end
     }
-    while not warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong do
+    repeat
         local ins = CPU.fetchbyte(MEM)
         if ftbl[ins] then
             ftbl[ins](MEM)
+            log = log.."Executed instruction "..ins.."\n"
+        elseif ftbl[ins] ~= nil then
+            log = log.."Invalid instruction at "..CPU.PC-1 .."\n"
         end
-    end
+        if CPU.PC == 255 then
+            warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong = true
+        end
+    until warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong
 end
 
 if fs.exists(args[1]) then
@@ -170,3 +212,6 @@ if fs.exists(args[1]) then
 end
 
 exec(MEM)
+
+logfile.write(log) 
+logfile.close()
