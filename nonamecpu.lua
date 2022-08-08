@@ -15,7 +15,9 @@ local CPU = {
         ["INS_SV"] = 0x08,
         ["INS_MOV"] = 0x09,
         ["INS_MOVMR"] = 0x0A,
-        ["INS_MOVRM"] = 0x0B    
+        ["INS_MOVRM"] = 0x0B,
+        ["INS_ADD"] = 0x0C,
+        ["INS_SUB"] = 0x0D 
     }
 }
 
@@ -80,6 +82,16 @@ local function exec(mem)
         [0x0B] = function(mem)
             local dt = CPU.fetchbyte(mem)
             mem[dt] = CPU.IR
+        end,
+        [0x0C] = function(mem)
+            local a = CPU.fetchbyte(mem)
+            local b = CPU.fetchbyte(mem)
+            CPU.IR = (a + b) % 256
+        end,
+        [0x0D] = function(mem)
+            local a = CPU.fetchbyte(mem)
+            local b = CPU.fetchbyte(mem)
+            CPU.IR = a - b; if CPU.IR < 0 then CPU.IR = CPU.IR + 256 end
         end
     }
     while not warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong do
@@ -100,3 +112,4 @@ if fs.exists(args[1]) then
 end
 
 exec(MEM)
+
