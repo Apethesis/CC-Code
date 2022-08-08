@@ -30,31 +30,31 @@ local function exec(mem)
         [0x01] = function(mem)
             local dt1 = CPU.fetchbyte(mem)
             local dt2 = CPU.fetchbyte(mem)
-            IR = bit32.band(dt1, dt2)
+            CPU.IR = bit32.band(dt1, dt2)
         end,
         [0x02] = function(mem)
             local dt1 = CPU.fetchbyte(mem)
             local dt2 = CPU.fetchbyte(mem)
-            IR = bit32.bor(dt1, dt2)
+            CPU.IR = bit32.bor(dt1, dt2)
         end,
         [0x03] = function(mem)
             local dt1 = CPU.fetchbyte(mem)
             local dt2 = CPU.fetchbyte(mem)
-            IR = bit32.band(bit32.bnot(dt1), bit32.bnot(dt2))
+            CPU.IR = bit32.band(bit32.bnot(dt1), bit32.bnot(dt2))
         end,
         [0x04] = function(mem)
             local dt1 = CPU.fetchbyte(mem)
             local dt2 = CPU.fetchbyte(mem)
-            IR = bit32.bor(bit32.bnot(dt1), bit32.bnot(dt2))
+            CPU.IR = bit32.bor(bit32.bnot(dt1), bit32.bnot(dt2))
         end,
         [0x05] = function(mem)
             local dt1 = CPU.fetchbyte(mem)
             local dt2 = CPU.fetchbyte(mem)
-            IR = bit32.bxor(dt1, dt2)
+            CPU.IR = bit32.bxor(dt1, dt2)
         end,
         [0x06] = function(mem)
             local dt1 = CPU.fetchbyte(mem)
-            IR = bit32.bnot(dt1)
+            CPU.IR = bit32.bnot(dt1)
         end,
         [0x07] = function()
             warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong = true
