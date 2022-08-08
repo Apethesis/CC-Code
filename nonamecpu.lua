@@ -4,7 +4,7 @@ local MEM = {
     SP = 0
 }
 local CPU = {
-    PC = 0x1,
+    PC = 0x01,
     IR = 0,
     INST = {
         ["INS_AND"] = 0x01,
@@ -28,18 +28,26 @@ local CPU = {
         ["INS_TRM_SFC"] = 0x13,
         ["INS_TRM_WRT"] = 0x14,
         ["INS_TRM_CLR"] = 0x15,
-        ["INS_PAUSE"] = 0x16
+        ["INS_PAUSE"] = 0x16,
+        ["INST_OUTIR"] = 0x17
     }
 }
-
+for i=1,256 do
+    MEM[i] = 0
+end
 local args = {...}
 args[1] = args[1] or "/save"
+local PC = 0x01
 function CPU.fetchbyte(mem)
     local dat = mem[CPU.PC]
     CPU.PC = CPU.PC + 1
     return dat
 end
-
+function CPU.readbyte(mem)
+    local dat = mem[CPU.PC]
+    PC = PC + 1
+    return dat
+end
 local function exec(mem)
     local warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong = false
     local ftbl = {
@@ -139,6 +147,9 @@ local function exec(mem)
         [0x16] = function(mem)
             local tm = CPU.fetchbyte(mem)
             sleep(tm)
+        end,
+        [0x17] = function()
+            print(tostring(CPU.IR))
         end
     }
     while not warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong do
