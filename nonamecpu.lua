@@ -180,7 +180,7 @@ local function exec(meem)
             sleep(tm)
         end,
         [0x17] = function(mem)
-            local dt1 = CPU.fetchbyte(mem) or 0
+            local dt1 = CPU.fetchbyte(mem) or 0x01
             if dt1 == 0x01 then
                 print(tostring(CPU.IR.A))
             elseif dt1 == 0x02 then
