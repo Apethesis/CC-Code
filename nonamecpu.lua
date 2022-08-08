@@ -12,7 +12,10 @@ local CPU = {
         ["INS_XOR"] = 0x05,
         ["INS_NOT"] = 0x06,
         ["INS_BREAK"] = 0x07,
-        ["INS_SV"] = 0x08
+        ["INS_SV"] = 0x08,
+        ["INS_MOV"] = 0x09,
+        ["INS_MOVMR"] = 0x0A,
+        ["INS_MOVRM"] = 0x0B    
     }
 }
 
@@ -64,6 +67,19 @@ local function exec(mem)
             mem.CPC = CPU.PC
             fl.write(textutils.serialize(mem))
             fl.close()
+        end,
+        [0x09] = function(mem)
+            local dt1 = CPU.fetchbyte(mem)
+            local dt2 = CPU.fetchbyte(mem)
+            mem[dt2] = dt1
+        end,
+        [0x0A] = function(mem)
+            local dt = CPU.fetchbyte(mem)
+            CPU.IR = dt
+        end,
+        [0x0B] = function(mem)
+            local dt = CPU.fetchbyte(mem)
+            mem[dt] = CPU.IR
         end
     }
     while not warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong do
