@@ -25,7 +25,7 @@ local inst = {
     ["TRM_WRT"] = 0x14,
     ["TRM_CLR"] = 0x15,
     SLEEP = 0x16,
-    VAR = 0x17
+    OUTIR = 0x17
 }
 local fl1 = fs.open(args[1],"r")
 local fl2 = fs.open(args[2],"w")
@@ -39,35 +39,19 @@ repeat
         for substring in ln:gmatch("%S+") do
             table.insert(chunks, substring)
         end
-        for k,v in pairs(chunks) do
-            if chunks[1] == "VAR" then
-                if k == 1 then
-                    vtbl[chunks[2]] = tonumber(chunks[3])
-                    cur = cur + 1
-                end
-                otbl[cur] = tonumber(v)
-                cur = cur + 1
-            else
-                if k == 1 then
-                    otbl[cur] = inst[v]
-                    cur = cur + 1
-                else
-                    otbl[cur] = tonumber(v)
-                    cur = cur + 1
-                end
+        for k,v in pairs(chunks) do 
+        if k == 1 then
+            otbl[cur] = inst[v]
+            cur = cur + 1
+        else
+            otbl[cur] = tonumber(v)
+            cur = cur + 1
             end
         end
     else
         mybraindamageisrisingitsoverflowing = true
     end
 until mybraindamageisrisingitsoverflowing
-for k1,v1 in pairs(vtbl) do
-    for k2,v2 in pairs(otbl) do
-        if v2 == k1 then
-            otbl[v2] = v1
-        end
-    end
-end
 fl2.write(textutils.serialize(otbl))
 fl1.close()
 fl2.close()
