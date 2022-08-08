@@ -1,3 +1,5 @@
+-- My 8 bit (i think) CPU made to work with CC, but easily modifiable to work with regular lua most likely.
+-- Recommended to use 'lasm' instead of manually writing opcodes
 local MEM = {
     SP = 0
 }
@@ -17,7 +19,10 @@ local CPU = {
         ["INS_MOVMR"] = 0x0A,
         ["INS_MOVRM"] = 0x0B,
         ["INS_ADD"] = 0x0C,
-        ["INS_SUB"] = 0x0D 
+        ["INS_SUB"] = 0x0D,
+        ["INS_OUT"] = 0x0E,
+        ["INS_TOUT"] = 0x0F,
+        ["INS_JMP"] = 0x10
     }
 }
 
@@ -92,6 +97,18 @@ local function exec(mem)
             local a = CPU.fetchbyte(mem)
             local b = CPU.fetchbyte(mem)
             CPU.IR = a - b; if CPU.IR < 0 then CPU.IR = CPU.IR + 256 end
+        end,
+        [0x0E] = function(mem)
+            local dt1 = CPU.fetchbyte(mem)
+            print(dt1)
+        end,
+        [0x0F] = function(mem)
+            local dt1 = CPU.fetchbyte(mem) 
+            print(keys.getName(dt1))
+        end,
+        [0x10] = function(mem)
+            local dt1 = CPU.fetchbyte(mem)
+            CPU.PC = dt1
         end
     }
     while not warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong do
@@ -112,4 +129,3 @@ if fs.exists(args[1]) then
 end
 
 exec(MEM)
-
