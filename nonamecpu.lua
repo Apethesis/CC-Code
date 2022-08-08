@@ -22,7 +22,13 @@ local CPU = {
         ["INS_SUB"] = 0x0D,
         ["INS_OUT"] = 0x0E,
         ["INS_TOUT"] = 0x0F,
-        ["INS_JMP"] = 0x10
+        ["INS_JMP"] = 0x10,
+        ["INS_TRM_SCP"] = 0x11,
+        ["INS_TRM_SBC"] = 0x12,
+        ["INS_TRM_SFC"] = 0x13,
+        ["INS_TRM_WRT"] = 0x14,
+        ["INS_TRM_CLR"] = 0x15,
+        ["INS_PAUSE"] = 0x16
     }
 }
 
@@ -109,6 +115,30 @@ local function exec(mem)
         [0x10] = function(mem)
             local dt1 = CPU.fetchbyte(mem)
             CPU.PC = dt1
+        end,
+        [0x11] = function(mem)
+            local dt1 = CPU.fetchbyte(mem)
+            local dt2 = CPU.fetchbyte(mem)
+            term.setCursorPos(dt1,dt2)
+        end,
+        [0x12] = function(mem)
+            local dt1 = CPU.fetchbyte(mem)
+            term.setBackgroundColor(dt1)
+        end,
+        [0x13] = function(mem)
+            local dt1 = CPU.fetchbyte(mem)
+            term.setTextColor(dt1)
+        end,
+        [0x14] = function(mem)
+            local dt1 = CPU.fetchbyte(mem)
+            term.write(dt1)
+        end,
+        [0x15] = function()
+            term.clear()
+        end,
+        [0x16] = function(mem)
+            local tm = CPU.fetchbyte(mem)
+            sleep(tm)
         end
     }
     while not warisacruelparentbutaneffectiveteacheritsfinallessoniscarveddeepinmypsychethatthisworldandallitspeoplearediseasedfreewillisamythreligionisajokeweareallpawnscontrolledbysomethinggreatermemesthednaofthesoultheyshapeourwilltheyaretheculturetheyareeverythingwepassonexposesomeonetoangerlongenoughtheywilllearntohatetheybecomeacarrierenvygreeddespairallmemesallpassedalong do
