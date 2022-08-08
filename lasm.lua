@@ -18,7 +18,13 @@ local inst = {
     SUB = 0x0D,
     OUT = 0x0E,
     TEXOUT = 0x0F,
-    JUMP = 0x10
+    JUMP = 0x10,
+    ["TRM_SCP"] = 0x11,
+    ["TRM_SBC"] = 0x12,
+    ["TRM_SFC"] = 0x13,
+    ["TRM_WRT"] = 0x14,
+    ["TRM_CLR"] = 0x15,
+    SLEEP = 0x16
 }
 local fl1 = fs.open(args[1],"r")
 local fl2 = fs.open(args[2],"w")
