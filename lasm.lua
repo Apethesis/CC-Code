@@ -21,7 +21,7 @@ local inst = {
     JUMP = 0x10,
     ["TRM_SCP"] = 0x11,
     ["TRM_SBC"] = 0x12,
-    ["TRM_SFC"] = 0x13,
+    ["TRM_STC"] = 0x13,
     ["TRM_WRT"] = 0x14,
     ["TRM_CLR"] = 0x15,
     SLEEP = 0x16,
@@ -39,13 +39,14 @@ repeat
         for substring in ln:gmatch("%S+") do
             table.insert(chunks, substring)
         end
+        print(textutils.serialize(chunks))
         for k,v in pairs(chunks) do 
-        if k == 1 then
-            otbl[cur] = inst[v]
-            cur = cur + 1
-        else
-            otbl[cur] = tonumber(v)
-            cur = cur + 1
+            if k == 1 and not v == "--" then
+                otbl[cur] = inst[v]
+                cur = cur + 1
+            else
+                otbl[cur] = tonumber(v)
+                cur = cur + 1
             end
         end
     else
