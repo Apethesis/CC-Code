@@ -25,7 +25,10 @@ local inst = {
     ["TRM_WRT"] = 0x14,
     ["TRM_CLR"] = 0x15,
     SLEEP = 0x16,
-    OUTIR = 0x17
+    OUTIR = 0x17,
+    BEEP = 0x18,
+    PCL = 0x19,
+    PCR = 0x1A
 }
 local fl1 = fs.open(args[1],"r")
 local fl2 = fs.open(args[2],"w")
