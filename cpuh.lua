@@ -30,7 +30,10 @@ local CPU = {
         ["INS_TRM_WRT"] = 0x14,
         ["INS_TRM_CLR"] = 0x15,
         ["INS_PAUSE"] = 0x16,
-        ["INST_OUTIR"] = 0x17
+        ["INS_OUTIR"] = 0x17,
+        ["INS_BEEP"] = 0x18,
+        ["INS_PCL"] = 0x19,
+        ["INS_PCR"] = 0x1A
     },
     ["TRM_COLR"] = {
         [0x00] = colors.white,
@@ -145,7 +148,7 @@ local function exec(meem)
         end,
         [0x0E] = function(mem)
             local dt1 = CPU.fetchbyte(mem) or 0
-            print(dt1)
+            print(mem[dt1])
         end,
         [0x0F] = function(mem)
             local dt1 = CPU.fetchbyte(mem)  or 0
@@ -186,6 +189,18 @@ local function exec(meem)
             elseif dt1 == 0x02 then
                 print(tostring(CPU.IR.B))
             end
+        end,
+        [0x18] = function(mem)
+            local dt1 = CPU.fetchbyte(mem) or 0x01
+            local dt2 = CPU.fetchbyte(mem) or 0x0C
+            local spkr = assert(peripheral.find("speaker"),"Speaker not found, unable to BEEP")
+            spkr.playNote("xylophone", dt1, dt2)
+        end,
+        [0x19] = function()
+            CPU.PC = CPU.PC - 1
+        end,
+        [0x1A] = function()
+            CPU.PC = CPU.PC + 1
         end
     }
     repeat
