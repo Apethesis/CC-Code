@@ -29,7 +29,7 @@ end
 function ftbl:log(msg,use,level)
     use = use or "undefined"
     level = level or 0
-    local lvs = { [0] = "INFO", [1] = "WARN", [2] = "ERROR", [3] = "FATAL" }
+    local lvs = { [0] = "INFO", [1] = "WARN", [2] = "ERROR", [3] = "FATAL", [4] = "DEBUG" }
     lgstr = lgstr.."["..ftbl.gtDat().."] ["..self.tnm.."/"..lvs[level].."] ["..use.."/]: "..msg.."\n"
 end
 
