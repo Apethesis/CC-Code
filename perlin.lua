@@ -34,7 +34,7 @@ function pearlin.createNDarray(n, tbl)
     tbl = tbl or {} 
     if n == 0 then return tbl end 
     setmetatable(tbl, {__index = function(t, k) 
-        local new = createNDarray(n - 1) 
+        local new = pearlin.createNDarray(n - 1) 
         t[k] = new 
         return new 
     end}) 
@@ -79,21 +79,19 @@ function pearlin.noise2d(x,y)
     local dotTopRight = topRight:dot(pearlin.getConstVector(valueTopRight))
     local dotTopLeft = topLeft:dot(pearlin.getConstVector(valueTopLeft))
     local dotBottomRight = bottomRight:dot(pearlin.getConstVector(valueBottomRight))
-    local dotBottomLeft = bottomLeft:dot(getConstVector(valueBottomLeft))
+    local dotBottomLeft = bottomLeft:dot(pearlin.getConstVector(valueBottomLeft))
     local u = pearlin.fade(xf)
     local v = pearlin.fade(yf)
     return pearlin.lerp(u, pearlin.lerp(v, dotBottomLeft, dotTopLeft), pearlin.lerp(v, dotBottomRight, dotTopRight))
 end
 
-function noise(x,y)
-    local tbl = {}
-    pearlin.createNDarray(2, tbl)
+function pearlin.noise(x,y)
+    local tbl = pearlin.createNDarray(2)
     for a=0,y do
         for b=0,x do
             local n = ((pearlin.noise2d(a*0.01,b*0.01)) + 1) * 0.5
             n = n + 1.0
             n = n * 0.5
-            local rgb = math.floor((255*n)+0.5)
             tbl[a][b] = n
             os.queueEvent("cap") os.pullEvent("cap")
         end
