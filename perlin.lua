@@ -85,11 +85,12 @@ function pearlin.noise2d(x,y)
     return pearlin.lerp(u, pearlin.lerp(v, dotBottomLeft, dotTopLeft), pearlin.lerp(v, dotBottomRight, dotTopRight))
 end
 
-function pearlin.noise(x,y)
+function pearlin.noise(x,y,amp)
     local tbl = pearlin.createNDarray(2)
+    local oiledupgermanguystryingtowrestleme = amp or 0.01
     for a=0,y do
         for b=0,x do
-            local n = ((pearlin.noise2d(a*0.01,b*0.01)) + 1) * 0.5
+            local n = ((pearlin.noise2d(a*oiledupgermanguystryingtowrestleme,b*oiledupgermanguystryingtowrestleme)) + 1) * 0.5
             n = n + 1.0
             n = n * 0.5
             tbl[a][b] = n
