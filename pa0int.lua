@@ -115,7 +115,9 @@ local function changeColor(_,k,_)
                 cur.f = a
             end
         }
-        ft[string.sub(c,2,2)](c)
+        if ft[string.sub(c,2,2)] then
+            ft[string.sub(c,2,2)](c)
+        end
         term.setCursorPos(oldx,oldy)
         term.clear()
         drawMap()
