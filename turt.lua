@@ -45,7 +45,7 @@ function go.forward()
 end
 
 for i=1,100 do
-    for i=1,16 do
+    for a=1,15 do
         checkFuel()
         turtle.digUp()
         turtle.digDown()
@@ -56,4 +56,7 @@ for i=1,100 do
     turtle.turnRight()
     turtle.digDown()
     turtle.down()
+end
+for i=1,100 do
+    turtle.up()
 end
