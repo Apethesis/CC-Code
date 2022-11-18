@@ -25,7 +25,8 @@ end
 -- The start of all, api.create()
 function api.create(x,y,width,height,terme)
     terme = terme or term.current()
-    x = x or 1 y = y or 1 width, height = term.getSize() 
+    local tx,ty = term.getSize() 
+    x = x or 1 y = y or 1 width = width or tx height = height or ty
     terme = window.create(terme,x,y,width,height)
     return setmetatable({ data = {}, tasks = {}, term = terme },{__index = functable, __add = function(self,other)
         if type(other) == "table" then
