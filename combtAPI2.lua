@@ -23,7 +23,7 @@ local function mbIsWithin(x,y,start_x,start_y,width,height)
 end
 
 -- The start of all, api.create()
-function api.create(terme,x,y,width,height)
+function api.create(x,y,width,height,terme)
     terme = terme or term.current()
     x = x or 1 y = y or 1 width, height = term.getSize() 
     terme = window.create(terme,x,y,width,height)
