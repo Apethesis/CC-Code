@@ -77,8 +77,7 @@ end
 
 function functable:execute(func)
     func = func or function()
-        os.epoch()
-        sleep(3)
+        os.queueEvent("shit") os.pullEvent("shit")
     end
     local function checkin()
         while true do
