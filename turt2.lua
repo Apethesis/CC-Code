@@ -1,33 +1,8 @@
 local blacklist = {
     ["minecraft:cobblestone"] = true,
     ["minecraft:stone"] = true,
-    ["minecraft:gravel"] = true,
+    ["minecraft:gravel"] = true
 }
-local function dig()
-    while true do
-        turtle.dig()
-        turtle.forward()
-        turtle.digUp()
-        turtle.digDown()
-        turtle.turnLeft()
-        turtle.dig()
-        turtle.forward()
-        turtle.digUp()
-        turtle.digDown()
-        turtle.turnRight()
-        turtle.turnRight()
-        turtle.forward()
-        turtle.forward()
-        turtle.dig()
-        turtle.forward()
-        turtle.digUp()
-        turtle.digDown()
-        turtle.turnLeft()
-        turtle.turnLeft()
-        turtle.forward()
-        turtle.turnRight()
-    end
-end
 local function other()
     while true do
         for i=1,16 do
@@ -37,6 +12,7 @@ local function other()
                 turtle.drop()
             end
         end
+        sleep()
         if turtle.getFuelLevel() <= 10 then
             print("Out of fuel")
             while true do
@@ -55,5 +31,31 @@ local function other()
         end
     end
 end
-parallel.waitForAll(other,dig)
-os.reboot()
+local function dig()
+    while true do
+        other()
+        turtle.dig()
+        turtle.forward()
+        turtle.digUp()
+        turtle.digDown()
+        turtle.turnLeft()
+        turtle.dig()
+        turtle.forward()
+        turtle.digUp()
+        turtle.digDown()
+        turtle.turnRight()
+        turtle.turnRight()
+        turtle.forward()
+        turtle.forward()
+        turtle.dig()
+        turtle.forward()
+        turtle.digUp()
+        turtle.digDown()
+        turtle.turnLeft()
+        turtle.turnLeft()
+        turtle.forward()
+        turtle.turnRight()
+        sleep()
+    end
+end
+dig()
