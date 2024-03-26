@@ -3,6 +3,16 @@ local exshelt = 1
 while os.time("ingame") < 19 do
     sleep(5)
 end
+function split(inputstr, sep)
+    if sep == nil then
+            sep = "%s"
+    end
+    local t={}
+    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+            table.insert(t, str)
+    end
+    return t
+end
 commands.exec('tellraw @a ["The rain is starting..."]')
 sleep(0.1)
 commands.exec('tellraw @a ["Find shelter."]')
@@ -24,7 +34,7 @@ local pstr = ""
 for k,v in ipairs(plist) do
     pstr = pstr..v
 end
-plist = string.gmatch(pstr,"%S+")
+plist = split(pstr)
 for i=1,10 do
     table.remove(plist,1)
 end
