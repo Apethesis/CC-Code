@@ -53,5 +53,5 @@ end
 term.clear()
 term.setTextColor(colors.yellow)
 term.setCursorPos(1,1)
-term.write("CraftOS 1.8")
+term.write("CraftOS 1.9")
 print()
